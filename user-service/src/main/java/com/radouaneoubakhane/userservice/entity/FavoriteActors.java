@@ -7,27 +7,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Entity
-@Table(name = "profile")
+@Table(name = "favorite_actors")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Profile {
+public class FavoriteActors {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String profilePicture;
-    private LocalDate birthDate;
-    private String birthPlace;
-    private String bio;
-    private String preferences;
-    @OneToOne
+    private Long actorId;
+
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
 }
