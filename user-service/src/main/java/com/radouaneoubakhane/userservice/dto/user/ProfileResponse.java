@@ -1,7 +1,6 @@
-package com.radouaneoubakhane.userservice.entity;
+package com.radouaneoubakhane.userservice.dto.user;
 
-
-import jakarta.persistence.*;
+import com.radouaneoubakhane.userservice.dto.profile.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,15 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "profile")
+
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Profile {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProfileResponse {
     private Long id;
     private String firstName;
     private String lastName;
@@ -26,8 +22,4 @@ public class Profile {
     private String birthPlace;
     private String bio;
     private String preferences;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
 }

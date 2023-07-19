@@ -16,11 +16,6 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    @GetMapping
-    public List<ProfileResponse> getProfiles() {
-        return profileService.getProfiles();
-    }
-
     @GetMapping("/me")
     public ProfileResponse getMyProfile() {
         return profileService.getMyProfile();
@@ -41,6 +36,13 @@ public class ProfileController {
         profileService.deleteMyProfile();
     }
 
+    // Admin operations
+
+    @GetMapping
+    public List<ProfileResponse> getProfiles() {
+        return profileService.getProfiles();
+    }
+
     @GetMapping("/{id}")
     public ProfileResponse getProfile(@PathVariable Long id) {
         return profileService.getProfile(id);
@@ -51,9 +53,9 @@ public class ProfileController {
         return profileService.updateProfile(id, profileRequest);
     }
 
-    @PostMapping("/{id}")
-    public ProfileResponse createProfile(@PathVariable Long id, @RequestBody ProfileRequest profileRequest) {
-        return profileService.createProfile(id, profileRequest);
+    @PostMapping
+    public ProfileResponse createProfile(@RequestBody ProfileRequest profileRequest) {
+        return profileService.createProfile(profileRequest);
     }
 
     @DeleteMapping("/{id}")

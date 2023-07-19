@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +22,7 @@ import java.util.Set;
 public class ProfileService {
 
     private final ProfileRepository profileRepository;
+
     public List<ProfileResponse> getProfiles() {
         log.info("Fetching all profiles");
 
@@ -84,6 +84,10 @@ return UserResponse.builder()
     public ProfileResponse createMyProfile(ProfileRequest profileRequest) {
         log.info("Creating my profile");
 
+        if (profileRepository.findByUserId(1L).isPresent()) {
+            throw new IllegalStateException("Profile already exists");
+        }
+
         Profile profile = Profile.builder()
                 .firstName(profileRequest.getFirstName())
                 .lastName(profileRequest.getLastName())
@@ -104,8 +108,7 @@ return UserResponse.builder()
         Profile profile = profileRepository.findByUserId(1L).orElseThrow(
                 () -> new ProfileNotFoundException("Profile not found")
         );
-
-        profileRepository.delete(profile);
+        ///
     }
 
     public ProfileResponse getProfile(Long id) {
@@ -136,8 +139,14 @@ return UserResponse.builder()
         return mapProfileToProfileResponse(profile);
     }
 
-    public ProfileResponse createProfile(Long id, ProfileRequest profileRequest) {
-        log.info("Creating profile with id {}", id);
+    public ProfileResponse createProfile(ProfileRequest profileRequest) {
+        log.info("Creating profile");
+
+        if (profileRepository.findByUserId(1L).isPresent()) {
+            throw new IllegalStateException("Profile already exists");
+        }
+
+        User user = User.builder().id(1L).build();
 
         Profile profile = Profile.builder()
                 .firstName(profileRequest.getFirstName())
@@ -147,7 +156,7 @@ return UserResponse.builder()
                 .birthPlace(profileRequest.getBirthPlace())
                 .bio(profileRequest.getBio())
                 .preferences(profileRequest.getPreferences())
-                .user(User.builder().id(id).build())
+                .user(user)
                 .build();
 
         return mapProfileToProfileResponse(profileRepository.save(profile));
@@ -161,7 +170,6 @@ return UserResponse.builder()
                 () -> new ProfileNotFoundException("Profile not found")
         );
 
-        profileRepository.delete(profile);
     }
 
     public List<ProfileResponse> searchProfiles(String name) {
@@ -171,4 +179,5 @@ return UserResponse.builder()
 
         return profiles.stream().map(this::mapProfileToProfileResponse).toList();
     }
+
 }
