@@ -22,4 +22,8 @@ public class FavoriteDirector {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public Long getUserId() {
+        return user.getId();
+    }
 }

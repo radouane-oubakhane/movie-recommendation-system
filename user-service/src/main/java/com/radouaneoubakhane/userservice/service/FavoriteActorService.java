@@ -50,6 +50,8 @@ public class FavoriteActorService {
                 throw new RuntimeException("Favorite actor not found");
             }
 
+            // Call the movie-service to get the favorite actor
+
             return mapFavoriteActorsToActorResponse(favoriteActor);
     }
 
