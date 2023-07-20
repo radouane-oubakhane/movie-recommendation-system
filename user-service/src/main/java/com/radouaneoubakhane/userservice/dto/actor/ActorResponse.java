@@ -13,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class ActorResponse {
     private Long id;
     private Long actorId;
+    private Long userId;
 }

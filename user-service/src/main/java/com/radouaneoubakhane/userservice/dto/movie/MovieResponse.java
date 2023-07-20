@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.userservice.dto.director;
+package com.radouaneoubakhane.userservice.dto.movie;
 
 
 import lombok.AllArgsConstructor;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DirectorResponse {
+public class MovieResponse {
     private Long id;
-    private Long directorId;
+    private Long movieId;
     private Long userId;
 }

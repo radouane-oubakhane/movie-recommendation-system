@@ -35,8 +35,8 @@ public class FavoriteDirectorService {
 
     private DirectorResponse mapFavoriteDirectorsToDirectorResponse(FavoriteDirector favoriteDirector) {
         return DirectorResponse.builder()
-                .id(1L)
-                .directorId(1L)
+                .id(favoriteDirector.getId())
+                .directorId(favoriteDirector.getDirectorId())
                 .build();
     }
 
@@ -59,6 +59,10 @@ public class FavoriteDirectorService {
     public void addMyFavoriteDirector(Long id) {
         log.info("addMyFavoriteDirector with id {}", id);
 
+        if (favoriteDirectorRepository.existsByUserIdAndDirectorId(1L, id)) {
+            throw new RuntimeException("Favorite director already exists");
+        }
+
         // Call the movie-service to get the favorite director
 
         User user = User.builder()
@@ -67,7 +71,7 @@ public class FavoriteDirectorService {
 
         FavoriteDirector favoriteDirector = FavoriteDirector.builder()
                 .id(1L)
-                .directorId(1L)
+                .directorId(id)
                 .user(user)
                 .build();
     }

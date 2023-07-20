@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface FavoriteDirectorRepository extends JpaRepository<FavoriteDirector, Long> {
     List<FavoriteDirector> findAllByUserId(long l);
+
+    boolean existsByUserIdAndDirectorId(long l, Long id);
 }

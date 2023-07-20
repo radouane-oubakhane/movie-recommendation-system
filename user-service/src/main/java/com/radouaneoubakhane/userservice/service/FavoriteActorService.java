@@ -34,8 +34,9 @@ public class FavoriteActorService {
 
     private ActorResponse mapFavoriteActorsToActorResponse(FavoriteActor favoriteActors) {
         return ActorResponse.builder()
-                .id(1L)
-                .actorId(1L)
+                .id(favoriteActors.getActorId())
+                .actorId(favoriteActors.getActorId())
+                .userId(favoriteActors.getUserId())
                 .build();
     }
 
@@ -57,6 +58,10 @@ public class FavoriteActorService {
 
     public void addMyFavoriteActor(Long id) {
         log.info("Adding my favorite actor with id {}", id);
+
+        if (favoriteActorRepository.existsByUserIdAndActorId(1L, id)) {
+            throw new RuntimeException("Favorite actor already exists");
+        }
 
         // Call the movie-service to validate the actor id if it exists
 

@@ -12,4 +12,6 @@ public interface FavoriteActorRepository extends JpaRepository<FavoriteActor, Lo
     List<FavoriteActor> findAllByUserId(long l);
 
     FavoriteActor findByIdAndUserId(Long id, long l);
+
+    boolean existsByUserIdAndActorId(long l, Long id);
 }
