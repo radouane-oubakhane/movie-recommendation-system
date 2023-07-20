@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.userservice.dto.user;
+package com.radouaneoubakhane.userservice.dto.actor;
 
 
 import lombok.AllArgsConstructor;
@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DirectorResponse {
+public class ActorResponse {
     private Long id;
-    private String name;
-    private String profilePath;
+    private Long actorId;
 }

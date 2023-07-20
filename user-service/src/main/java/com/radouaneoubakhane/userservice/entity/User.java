@@ -28,5 +28,5 @@ public class User {
     private Profile profile;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<FavoriteMovies> favoriteMovies;
+    private Set<FavoriteMovie> favoriteMovies;
 }

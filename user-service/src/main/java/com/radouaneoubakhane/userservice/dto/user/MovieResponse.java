@@ -11,4 +11,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MovieResponse {
+    private Long id;
+    private String title;
+    private String overview;
+    private String posterPath;
+    private String backdropPath;
+    private String releaseDate;
+    private Integer runtime;
+    private Double voteAverage;
+    private Integer voteCount;
+    private Boolean isWatched;
+    private Boolean isSaved;
+    private ActorResponse[] actors;
+    private DirectorResponse[] directors;
 }

@@ -1,7 +1,7 @@
-package com.radouaneoubakhane.userservice.service.util.maper;
+package com.radouaneoubakhane.userservice.mapper;
 
 
-public class UserServicesMaper {
+public class UserMapper {
     public static com.radouaneoubakhane.userservice.dto.profile.ProfileRequest
     map(com.radouaneoubakhane.userservice.dto.user.ProfileRequest profileRequest) {
         return com.radouaneoubakhane.userservice.dto.profile.ProfileRequest.builder()

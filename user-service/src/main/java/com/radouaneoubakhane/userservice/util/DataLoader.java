@@ -2,7 +2,6 @@ package com.radouaneoubakhane.userservice.util;
 
 
 import com.radouaneoubakhane.userservice.repository.*;
-import com.radouaneoubakhane.userservice.util.DataGenerators.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -11,13 +10,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
 
-    private final FavoriteActorsRepository favoriteActorsRepository;
-    private final FavoriteDirectorsRepository favoriteDirectorsRepository;
-    private final FavoriteMoviesRepository favoriteMoviesRepository;
-    private final SavedMoviesRepository savedMoviesRepository;
+    private final FavoriteActorRepository favoriteActorsRepository;
+    private final FavoriteDirectorRepository favoriteDirectorsRepository;
+    private final FavoriteMovieRepository favoriteMoviesRepository;
+    private final SavedMovieRepository savedMoviesRepository;
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
-    private final WatchedMoviesRepository watchedMoviesRepository;
+    private final WatchedMovieRepository watchedMoviesRepository;
     private final WatchlistRepository watchlistRepository;
 
 

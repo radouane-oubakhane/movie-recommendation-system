@@ -8,16 +8,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "favorite_directors")
+@Table(name = "saved_movies")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FavoriteDirectors {
+public class SavedMovie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long directorId;
+    private Long movieId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

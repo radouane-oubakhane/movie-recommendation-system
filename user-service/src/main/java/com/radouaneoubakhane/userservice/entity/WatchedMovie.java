@@ -8,12 +8,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "saved_movies")
+@Table(name = "watched_movies")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SavedMovies {
+public class WatchedMovie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

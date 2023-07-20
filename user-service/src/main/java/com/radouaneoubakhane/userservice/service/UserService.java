@@ -4,14 +4,15 @@ import com.radouaneoubakhane.userservice.dto.user.*;
 import com.radouaneoubakhane.userservice.entity.Profile;
 import com.radouaneoubakhane.userservice.entity.User;
 import com.radouaneoubakhane.userservice.exception.user.UserNotFoundException;
+import com.radouaneoubakhane.userservice.mapper.UserMapper;
 import com.radouaneoubakhane.userservice.repository.UserRepository;
-import com.radouaneoubakhane.userservice.service.util.maper.UserServicesMaper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -207,9 +208,9 @@ public class UserService {
         );
 
 
-        return UserServicesMaper.map(
+        return UserMapper.map(
                 profileService.createProfile(
-                        UserServicesMaper.map(profileRequest)
+                        UserMapper.map(profileRequest)
                 )
         );
     }
@@ -470,4 +471,17 @@ public class UserService {
 
         // Implement after implementing the WatchlistMovie service
     }
+
+//    public Optional<Object> getMyUserWithAuthorities() {
+//        log.info("Fetching my user with authorities");
+//
+//        User user = userRepository.findById(1L).orElseThrow(
+//                () -> new UserNotFoundException("User not found")
+//        );
+//
+//        return Optional.of(
+//                UserResponse.builder()
+//                        .build()
+//        );
+//    }
 }

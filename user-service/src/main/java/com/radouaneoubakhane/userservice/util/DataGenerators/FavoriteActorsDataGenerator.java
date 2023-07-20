@@ -1,10 +1,10 @@
 package com.radouaneoubakhane.userservice.util.DataGenerators;
 
-import com.radouaneoubakhane.userservice.entity.FavoriteActors;
+import com.radouaneoubakhane.userservice.entity.FavoriteActor;
 
 public class FavoriteActorsDataGenerator {
-    public static FavoriteActors getInstance() {
-        return FavoriteActors.builder()
+    public static FavoriteActor getInstance() {
+        return FavoriteActor.builder()
                 .id(1L)
                 .user(UserDataGenerator.generateUser())
                 .actorId(1L)

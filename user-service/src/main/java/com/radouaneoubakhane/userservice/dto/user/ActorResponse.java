@@ -11,5 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ActorResponse {
-
+    private Long id;
+    private String name;
+    private String character;
+    private String profilePath;
 }
