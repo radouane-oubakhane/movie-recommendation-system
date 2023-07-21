@@ -4,6 +4,7 @@ package com.radouaneoubakhane.userservice.service;
 import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.userservice.entity.SavedMovie;
 import com.radouaneoubakhane.userservice.entity.User;
+import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
 import com.radouaneoubakhane.userservice.repository.SavedMovieRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class SavedMovieService {
         log.info("Getting my saved movie with id {}", id);
 
         SavedMovie savedMovie = savedMovieRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Saved movie not found"));
+                .orElseThrow(() -> new MovieNotFoundException("Saved movie not found"));
 
         if (savedMovie.getUserId() != 1L) {
             throw new RuntimeException("Saved movie not found");
@@ -78,7 +79,7 @@ public class SavedMovieService {
         log.info("Deleting my saved movie with id {}", id);
 
         SavedMovie savedMovie = savedMovieRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Saved movie not found"));
+                .orElseThrow(() -> new MovieNotFoundException("Saved movie not found"));
 
         if (!savedMovieRepository.existsByMovieIdAndUserId(id, 1L)) {
             throw new RuntimeException("Movie not saved");

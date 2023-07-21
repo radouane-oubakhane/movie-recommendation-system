@@ -4,6 +4,7 @@ package com.radouaneoubakhane.userservice.service;
 import com.radouaneoubakhane.userservice.dto.director.DirectorResponse;
 import com.radouaneoubakhane.userservice.entity.FavoriteDirector;
 import com.radouaneoubakhane.userservice.entity.User;
+import com.radouaneoubakhane.userservice.exception.director.DirectorNotFoundException;
 import com.radouaneoubakhane.userservice.repository.FavoriteDirectorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class FavoriteDirectorService {
         log.info("getMyFavoriteDirector with id {}", id);
 
             FavoriteDirector favoriteDirector = favoriteDirectorRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Favorite director not found"));
+                    .orElseThrow(() -> new DirectorNotFoundException("Favorite director not found"));
 
             if (favoriteDirector.getUserId() != 1L) {
                 throw new RuntimeException("Favorite director not found");
@@ -74,13 +75,15 @@ public class FavoriteDirectorService {
                 .directorId(id)
                 .user(user)
                 .build();
+
+        favoriteDirectorRepository.save(favoriteDirector);
     }
 
     public void deleteMyFavoriteDirector(Long id) {
         log.info("deleteMyFavoriteDirector with id {}", id);
 
         FavoriteDirector favoriteDirector = favoriteDirectorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Favorite director not found"));
+                .orElseThrow(() -> new DirectorNotFoundException("Favorite director not found"));
 
         if (favoriteDirector.getUserId() != 1L) {
             throw new RuntimeException("Favorite director not found");

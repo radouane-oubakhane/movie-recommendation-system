@@ -3,6 +3,7 @@ package com.radouaneoubakhane.userservice.service;
 import com.radouaneoubakhane.userservice.dto.actor.ActorResponse;
 import com.radouaneoubakhane.userservice.entity.FavoriteActor;
 import com.radouaneoubakhane.userservice.entity.User;
+import com.radouaneoubakhane.userservice.exception.actor.ActorNotFoundException;
 import com.radouaneoubakhane.userservice.repository.FavoriteActorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class FavoriteActorService {
         log.info("Getting my favorite actor with id {}", id);
 
             FavoriteActor favoriteActor = favoriteActorRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Favorite actor not found"));
+                    .orElseThrow(() -> new ActorNotFoundException("Favorite actor not found"));
 
             if (favoriteActor.getUserId() != 1L) {
                 throw new RuntimeException("Favorite actor not found");
@@ -80,7 +81,7 @@ public class FavoriteActorService {
         log.info("Deleting my favorite actor with id {}", id);
 
         FavoriteActor favoriteActor = favoriteActorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Favorite actor not found"));
+                .orElseThrow(() -> new ActorNotFoundException("Favorite actor not found"));
 
         if (favoriteActor.getUserId() != 1L) {
             throw new RuntimeException("Favorite actor not found");

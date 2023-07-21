@@ -3,6 +3,7 @@ package com.radouaneoubakhane.userservice.service;
 import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.userservice.entity.User;
 import com.radouaneoubakhane.userservice.entity.WatchedMovie;
+import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
 import com.radouaneoubakhane.userservice.repository.WatchedMovieRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class WatchedMovieService {
         log.info("Getting my watched movie with id {}", id);
 
             WatchedMovie watchedMovie = watchedMovieRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Watched movie not found"));
+                    .orElseThrow(() -> new MovieNotFoundException("Watched movie not found"));
 
             if (watchedMovie.getUserId() != 1L) {
                 throw new RuntimeException("Watched movie not found");
@@ -79,7 +80,7 @@ public class WatchedMovieService {
         log.info("Deleting my watched movie with id {}", id);
 
         WatchedMovie watchedMovie = watchedMovieRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Watched movie not found"));
+                .orElseThrow(() -> new MovieNotFoundException("Watched movie not found"));
 
         if (watchedMovie.getUserId() != 1L) {
             throw new RuntimeException("Watched movie not found");

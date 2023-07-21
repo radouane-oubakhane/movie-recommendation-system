@@ -4,6 +4,7 @@ package com.radouaneoubakhane.userservice.service;
 import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.userservice.entity.User;
 import com.radouaneoubakhane.userservice.entity.WatchlistMovie;
+import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
 import com.radouaneoubakhane.userservice.repository.WatchlistMovieRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class WatchlistMovieService {
         log.info("Getting my watchlist movie with id {}", id);
 
         WatchlistMovie watchlistMovie = watchlistMovieRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Watchlist movie not found"));
+                .orElseThrow(() -> new MovieNotFoundException("Watchlist movie not found"));
 
         if (watchlistMovie.getUserId() != 1L) {
             throw new RuntimeException("Watchlist movie not found");
@@ -82,7 +83,7 @@ public class WatchlistMovieService {
         log.info("Deleting my watchlist movie with id {}", id);
 
         WatchlistMovie watchlistMovie = watchlistMovieRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Watchlist movie not found"));
+                .orElseThrow(() -> new MovieNotFoundException("Watchlist movie not found"));
 
         if (watchlistMovie.getUserId() != 1L) {
             throw new RuntimeException("Watchlist movie not found");

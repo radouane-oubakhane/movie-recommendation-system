@@ -4,6 +4,7 @@ package com.radouaneoubakhane.userservice.service;
 import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.userservice.entity.FavoriteMovie;
 import com.radouaneoubakhane.userservice.entity.User;
+import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
 import com.radouaneoubakhane.userservice.repository.FavoriteMovieRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class FavoriteMovieService {
         log.info("getMyFavoriteMovie with id {}", id);
 
         FavoriteMovie favoriteMovie = favoriteMovieRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Favorite movie not found"));
+                .orElseThrow(() -> new MovieNotFoundException("Favorite movie not found"));
 
         if (favoriteMovie.getUserId() != 1L) {
             throw new RuntimeException("Favorite movie not found");
@@ -81,7 +82,7 @@ public class FavoriteMovieService {
         log.info("deleteMyFavoriteMovie with id {}", id);
 
         FavoriteMovie favoriteMovie = favoriteMovieRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Favorite movie not found"));
+                .orElseThrow(() -> new MovieNotFoundException("Favorite movie not found"));
 
 
         if (favoriteMovie.getUserId() != 1L) {
