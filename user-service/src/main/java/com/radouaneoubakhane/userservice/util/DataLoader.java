@@ -17,7 +17,7 @@ public class DataLoader implements CommandLineRunner {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final WatchedMovieRepository watchedMoviesRepository;
-    private final WatchlistRepository watchlistRepository;
+    private final WatchlistMovieRepository watchlistRepository;
 
 
     @Override

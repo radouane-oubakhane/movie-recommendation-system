@@ -8,12 +8,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "watchlist")
+@Table(name = "watchlist_movie")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Watchlist {
+public class WatchlistMovie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,4 +22,8 @@ public class Watchlist {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public Long getUserId() {
+        return user.getId();
+    }
 }
