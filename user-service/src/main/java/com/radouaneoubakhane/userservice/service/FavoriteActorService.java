@@ -19,7 +19,6 @@ import java.util.List;
 public class FavoriteActorService {
 
     private final FavoriteActorRepository favoriteActorRepository;
-    private final UserService userService;
 
     public List<ActorResponse> getMyFavoriteActors() {
         log.info("Getting my favorite actors");
