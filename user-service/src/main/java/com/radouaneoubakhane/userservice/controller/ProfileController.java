@@ -16,52 +16,52 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    @GetMapping("/me")
+    @GetMapping
     public ProfileResponse getMyProfile() {
         return profileService.getMyProfile();
     }
 
-    @PutMapping("/me")
+    @PutMapping
     public ProfileResponse updateMyProfile(@RequestBody ProfileRequest profileRequest) {
         return profileService.updateMyProfile(profileRequest);
     }
 
-    @PostMapping("/me")
+    @PostMapping
     public ProfileResponse createMyProfile(@RequestBody ProfileRequest profileRequest) {
         return profileService.createMyProfile(profileRequest);
     }
 
-    @DeleteMapping("/me")
+    @DeleteMapping
     public void deleteMyProfile() {
         profileService.deleteMyProfile();
     }
 
     // Admin operations
 
-    @GetMapping
-    public List<ProfileResponse> getProfiles() {
-        return profileService.getProfiles();
-    }
-
-    @GetMapping("/{id}")
-    public ProfileResponse getProfile(@PathVariable Long id) {
-        return profileService.getProfile(id);
-    }
-
-    @PutMapping("/{id}")
-    public ProfileResponse updateProfile(@PathVariable Long id, @RequestBody ProfileRequest profileRequest) {
-        return profileService.updateProfile(id, profileRequest);
-    }
-
-    @PostMapping
-    public ProfileResponse createProfile(@RequestBody ProfileRequest profileRequest) {
-        return profileService.createProfile(profileRequest);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteProfile(@PathVariable Long id) {
-        profileService.deleteProfile(id);
-    }
+//    @GetMapping
+//    public List<ProfileResponse> getProfiles() {
+//        return profileService.getProfiles();
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ProfileResponse getProfile(@PathVariable Long id) {
+//        return profileService.getProfile(id);
+//    }
+//
+//    @PutMapping("/{id}")
+//    public ProfileResponse updateProfile(@PathVariable Long id, @RequestBody ProfileRequest profileRequest) {
+//        return profileService.updateProfile(id, profileRequest);
+//    }
+//
+//    @PostMapping
+//    public ProfileResponse createProfile(@RequestBody ProfileRequest profileRequest) {
+//        return profileService.createProfile(profileRequest);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteProfile(@PathVariable Long id) {
+//        profileService.deleteProfile(id);
+//    }
 
     // Other operations
 
