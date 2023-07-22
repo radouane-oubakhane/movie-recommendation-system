@@ -84,7 +84,7 @@ public class FavoriteActorService {
                 .orElseThrow(() -> new ActorNotFoundException("Favorite actor not found"));
 
         if (favoriteActor.getUser().getId() != 1L) {
-            throw new RuntimeException("Favorite actor not found");
+            throw new ActorNotFoundException("Favorite actor not found");
         }
 
         favoriteActorRepository.delete(favoriteActor);
