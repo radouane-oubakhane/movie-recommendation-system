@@ -2,6 +2,7 @@ package com.radouaneoubakhane.userservice.util;
 
 
 import com.radouaneoubakhane.userservice.repository.*;
+import com.radouaneoubakhane.userservice.util.DataGenerators.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

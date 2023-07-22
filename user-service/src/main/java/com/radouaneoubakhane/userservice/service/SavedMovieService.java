@@ -37,7 +37,7 @@ public class SavedMovieService {
         return MovieResponse.builder()
                 .id(favoriteMovie.getId())
                 .movieId(favoriteMovie.getMovieId())
-                .userId(favoriteMovie.getUserId())
+                .userId(favoriteMovie.getUser().getId())
                 .build();
     }
 
@@ -47,7 +47,7 @@ public class SavedMovieService {
         SavedMovie savedMovie = savedMovieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException("Saved movie not found"));
 
-        if (savedMovie.getUserId() != 1L) {
+        if (savedMovie.getUser().getId() != 1L) {
             throw new RuntimeException("Saved movie not found");
         }
 
@@ -81,8 +81,8 @@ public class SavedMovieService {
         SavedMovie savedMovie = savedMovieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException("Saved movie not found"));
 
-        if (!savedMovieRepository.existsByMovieIdAndUserId(id, 1L)) {
-            throw new RuntimeException("Movie not saved");
+        if (savedMovie.getUser().getId() != 1L) {
+            throw new RuntimeException("Saved movie not found");
         }
 
         savedMovieRepository.delete(savedMovie);

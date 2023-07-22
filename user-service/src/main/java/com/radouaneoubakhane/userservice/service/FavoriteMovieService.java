@@ -38,7 +38,7 @@ public class FavoriteMovieService {
         return MovieResponse.builder()
                 .id(favoriteMovie.getMovieId())
                 .movieId(favoriteMovie.getMovieId())
-                .userId(favoriteMovie.getUserId())
+                .userId(favoriteMovie.getUser().getId())
                 .build();
     }
 
@@ -48,7 +48,7 @@ public class FavoriteMovieService {
         FavoriteMovie favoriteMovie = favoriteMovieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException("Favorite movie not found"));
 
-        if (favoriteMovie.getUserId() != 1L) {
+        if (favoriteMovie.getUser().getId() != 1L) {
             throw new RuntimeException("Favorite movie not found");
         }
 
@@ -85,7 +85,7 @@ public class FavoriteMovieService {
                 .orElseThrow(() -> new MovieNotFoundException("Favorite movie not found"));
 
 
-        if (favoriteMovie.getUserId() != 1L) {
+        if (favoriteMovie.getUser().getId() != 1L) {
                 throw new RuntimeException("Favorite movie not found");
         }
 

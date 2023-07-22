@@ -37,7 +37,7 @@ public class WatchlistMovieService {
         return MovieResponse.builder()
                 .id(watchlistMovie.getMovieId())
                 .movieId(watchlistMovie.getMovieId())
-                .userId(watchlistMovie.getUserId())
+                .userId(watchlistMovie.getUser().getId())
                 .build();
     }
 
@@ -48,7 +48,7 @@ public class WatchlistMovieService {
         WatchlistMovie watchlistMovie = watchlistMovieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException("Watchlist movie not found"));
 
-        if (watchlistMovie.getUserId() != 1L) {
+        if (watchlistMovie.getUser().getId() != 1L) {
             throw new RuntimeException("Watchlist movie not found");
         }
 
@@ -85,7 +85,7 @@ public class WatchlistMovieService {
         WatchlistMovie watchlistMovie = watchlistMovieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException("Watchlist movie not found"));
 
-        if (watchlistMovie.getUserId() != 1L) {
+        if (watchlistMovie.getUser().getId() != 1L) {
             throw new RuntimeException("Watchlist movie not found");
         }
 

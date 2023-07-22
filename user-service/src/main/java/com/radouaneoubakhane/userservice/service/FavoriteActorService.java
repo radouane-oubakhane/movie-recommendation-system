@@ -32,11 +32,11 @@ public class FavoriteActorService {
                 .toList();
     }
 
-    private ActorResponse mapFavoriteActorsToActorResponse(FavoriteActor favoriteActors) {
+    private ActorResponse mapFavoriteActorsToActorResponse(FavoriteActor favoriteActor) {
         return ActorResponse.builder()
-                .id(favoriteActors.getActorId())
-                .actorId(favoriteActors.getActorId())
-                .userId(favoriteActors.getUserId())
+                .id(favoriteActor.getActorId())
+                .actorId(favoriteActor.getActorId())
+                .userId(favoriteActor.getUser().getId())
                 .build();
     }
 
@@ -47,7 +47,7 @@ public class FavoriteActorService {
             FavoriteActor favoriteActor = favoriteActorRepository.findById(id)
                     .orElseThrow(() -> new ActorNotFoundException("Favorite actor not found"));
 
-            if (favoriteActor.getUserId() != 1L) {
+            if (favoriteActor.getUser().getId() != 1L) {
                 throw new RuntimeException("Favorite actor not found");
             }
 
@@ -83,7 +83,7 @@ public class FavoriteActorService {
         FavoriteActor favoriteActor = favoriteActorRepository.findById(id)
                 .orElseThrow(() -> new ActorNotFoundException("Favorite actor not found"));
 
-        if (favoriteActor.getUserId() != 1L) {
+        if (favoriteActor.getUser().getId() != 1L) {
             throw new RuntimeException("Favorite actor not found");
         }
 

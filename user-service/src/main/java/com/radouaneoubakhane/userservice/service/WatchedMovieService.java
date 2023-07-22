@@ -36,7 +36,7 @@ public class WatchedMovieService {
         return MovieResponse.builder()
                 .id(watchedMovie.getMovieId())
                 .movieId(watchedMovie.getMovieId())
-                .userId(watchedMovie.getUserId())
+                .userId(watchedMovie.getUser().getId())
                 .build();
     }
 
@@ -46,7 +46,7 @@ public class WatchedMovieService {
             WatchedMovie watchedMovie = watchedMovieRepository.findById(id)
                     .orElseThrow(() -> new MovieNotFoundException("Watched movie not found"));
 
-            if (watchedMovie.getUserId() != 1L) {
+            if (watchedMovie.getUser().getId() != 1L) {
                 throw new RuntimeException("Watched movie not found");
             }
 
@@ -82,7 +82,7 @@ public class WatchedMovieService {
         WatchedMovie watchedMovie = watchedMovieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException("Watched movie not found"));
 
-        if (watchedMovie.getUserId() != 1L) {
+        if (watchedMovie.getUser().getId() != 1L) {
             throw new RuntimeException("Watched movie not found");
         }
 

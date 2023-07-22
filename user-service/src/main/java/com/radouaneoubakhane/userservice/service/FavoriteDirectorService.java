@@ -38,6 +38,7 @@ public class FavoriteDirectorService {
         return DirectorResponse.builder()
                 .id(favoriteDirector.getId())
                 .directorId(favoriteDirector.getDirectorId())
+                .userId(favoriteDirector.getUser().getId())
                 .build();
     }
 
@@ -48,7 +49,7 @@ public class FavoriteDirectorService {
             FavoriteDirector favoriteDirector = favoriteDirectorRepository.findById(id)
                     .orElseThrow(() -> new DirectorNotFoundException("Favorite director not found"));
 
-            if (favoriteDirector.getUserId() != 1L) {
+            if (favoriteDirector.getUser().getId() != 1L) {
                 throw new RuntimeException("Favorite director not found");
             }
 
@@ -85,7 +86,7 @@ public class FavoriteDirectorService {
         FavoriteDirector favoriteDirector = favoriteDirectorRepository.findById(id)
                 .orElseThrow(() -> new DirectorNotFoundException("Favorite director not found"));
 
-        if (favoriteDirector.getUserId() != 1L) {
+        if (favoriteDirector.getUser().getId() != 1L) {
             throw new RuntimeException("Favorite director not found");
         }
 
