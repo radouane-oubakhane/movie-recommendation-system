@@ -178,5 +178,13 @@ public class ActorService {
 
         actor.getMovies().remove(movie);
     }
+
+    public List<ActorResponse> getActorsByIds(List<Long> id) {
+        log.info("Fetching actors by ids {}", id);
+
+        List<Actor> actors = actorRepository.findAllById(id);
+
+        return actors.stream().map(this::mapActorToActorResponse).toList();
+    }
 }
 

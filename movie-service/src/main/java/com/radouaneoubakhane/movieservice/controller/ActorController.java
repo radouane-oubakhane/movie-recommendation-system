@@ -76,5 +76,12 @@ public class ActorController {
     }
 
 
+    // Endpoints for the user-service
+
+    @GetMapping("/ids")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ActorResponse> getActorsByIds(@RequestParam List<Long> id) {
+        return actorService.getActorsByIds(id);
+    }
 }
 
