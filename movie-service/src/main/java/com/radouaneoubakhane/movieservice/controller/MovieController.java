@@ -83,6 +83,12 @@ public class MovieController {
         movieService.removeActorFromMovie(movieId, actorId);
     }
 
+    // Endpoints for the user-service
+    @GetMapping("/ids")
+    @ResponseStatus(HttpStatus.OK)
+    public List<MovieResponse> getMoviesByIds(@RequestParam List<Long> id) {
+        return movieService.getMoviesByIds(id);
+    }
 
 }
 

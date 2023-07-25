@@ -2,6 +2,7 @@ package com.radouaneoubakhane.userservice.service;
 
 
 import com.radouaneoubakhane.userservice.dto.director.DirectorResponse;
+import com.radouaneoubakhane.userservice.dto.director.FavoriteDirectorResponse;
 import com.radouaneoubakhane.userservice.entity.FavoriteDirector;
 import com.radouaneoubakhane.userservice.entity.User;
 import com.radouaneoubakhane.userservice.exception.director.DirectorNotFoundException;
@@ -10,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -19,31 +21,53 @@ import java.util.List;
 @Slf4j
 public class FavoriteDirectorService {
 
-    final FavoriteDirectorRepository favoriteDirectorRepository;
+    private final FavoriteDirectorRepository favoriteDirectorRepository;
+    private final WebClient.Builder webClientBuilder;
 
 
-    public List<DirectorResponse> getMyFavoriteDirectors() {
+
+    public List<FavoriteDirectorResponse> getMyFavoriteDirectors() {
         log.info("getMyFavoriteDirectors");
 
         List<FavoriteDirector> favoriteDirectors = favoriteDirectorRepository.findAllByUserId(1L);
 
         // Call the movie-service to get the favorite directors
+        // http://movie-service/api/v1/director/ids?id=id
+        List<DirectorResponse> result = webClientBuilder.build()
+                .get()
+                .uri(
+                        "http://movie-service/api/v1/director/ids",
+                                uriBuilder -> uriBuilder
+                                .queryParam("id", favoriteDirectors.stream()
+                                        .map(FavoriteDirector::getDirectorId)
+                                        .toList())
+                                .build()
+                        )
+                .retrieve()
+                .bodyToFlux(DirectorResponse.class)
+                .collectList()
+                .block();
 
+        return mapToFavoriteDirectorResponse(favoriteDirectors, result);
+    }
+
+    private List<FavoriteDirectorResponse> mapToFavoriteDirectorResponse(List<FavoriteDirector> favoriteDirectors, List<DirectorResponse> result) {
         return favoriteDirectors.stream()
-                        .map(this::mapFavoriteDirectorsToDirectorResponse)
-                        .toList();
+                .map(favoriteDirector -> {
+                    DirectorResponse directorResponse = result.stream()
+                            .filter(director -> director.getId().equals(favoriteDirector.getDirectorId()))
+                            .findFirst()
+                            .orElseThrow(() -> new DirectorNotFoundException("Favorite director not found"));
+
+                    return FavoriteDirectorResponse.builder()
+                            .id(favoriteDirector.getId())
+                            .director(directorResponse)
+                            .build();
+                })
+                .toList();
     }
 
-    private DirectorResponse mapFavoriteDirectorsToDirectorResponse(FavoriteDirector favoriteDirector) {
-        return DirectorResponse.builder()
-                .id(favoriteDirector.getId())
-                .directorId(favoriteDirector.getDirectorId())
-                .userId(favoriteDirector.getUser().getId())
-                .build();
-    }
-
-
-    public DirectorResponse getMyFavoriteDirector(Long id) {
+    public FavoriteDirectorResponse getMyFavoriteDirector(Long id) {
         log.info("getMyFavoriteDirector with id {}", id);
 
             FavoriteDirector favoriteDirector = favoriteDirectorRepository.findById(id)
@@ -53,9 +77,24 @@ public class FavoriteDirectorService {
                 throw new RuntimeException("Favorite director not found");
             }
 
-            // Call the movie-service to get the favorite director
+        // Call the movie-service to get the favorite director
+        // http://movie-service/api/v1/director/{id}
+        DirectorResponse result = webClientBuilder.build()
+                .get()
+                .uri(
+                        "http://movie-service/api/v1/director/{id}",
+                                uriBuilder -> uriBuilder
+                                .build(favoriteDirector.getDirectorId())
+                        )
+                .retrieve()
+                .bodyToMono(DirectorResponse.class)
+                .block();
 
-            return mapFavoriteDirectorsToDirectorResponse(favoriteDirector);
+        return FavoriteDirectorResponse.builder()
+                .id(favoriteDirector.getId())
+                .director(result)
+                .build();
+
     }
 
     public void addMyFavoriteDirector(Long id) {
@@ -66,6 +105,21 @@ public class FavoriteDirectorService {
         }
 
         // Call the movie-service to get the favorite director
+        // http://movie-service/api/v1/director/{id}
+        DirectorResponse result = webClientBuilder.build()
+                .get()
+                .uri(
+                        "http://movie-service/api/v1/director/{id}",
+                                uriBuilder -> uriBuilder
+                                .build(id)
+                        )
+                .retrieve()
+                .bodyToMono(DirectorResponse.class)
+                .block();
+
+        if (result == null) {
+            throw new DirectorNotFoundException("Favorite director not found");
+        }
 
         User user = User.builder()
                 .id(1L)

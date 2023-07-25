@@ -1,6 +1,7 @@
 package com.radouaneoubakhane.userservice.service;
 
 import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
+import com.radouaneoubakhane.userservice.dto.movie.WatchedMovieResponse;
 import com.radouaneoubakhane.userservice.entity.User;
 import com.radouaneoubakhane.userservice.entity.WatchedMovie;
 import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
@@ -9,6 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -19,28 +21,52 @@ import java.util.List;
 @Slf4j
 public class WatchedMovieService {
     private final WatchedMovieRepository watchedMovieRepository;
+    private final WebClient.Builder webClientBuilder;
 
-    public List<MovieResponse> getAllWatchedMovies() {
+    public List<WatchedMovieResponse> getAllWatchedMovies() {
         log.info("Getting all watched movies");
 
         List<WatchedMovie> watchedMovies = watchedMovieRepository.findAllByUserId(1L);
 
         // Call the movie-service to get the watched movies
+        // http://movie-service/api/v1/movie/ids?id=id
+        List<MovieResponse> result = webClientBuilder.build()
+                .get()
+                .uri(
+                        "http://movie-service/api/v1/movie/ids",
+                                uriBuilder -> uriBuilder
+                                .queryParam("id", watchedMovies.stream()
+                                        .map(WatchedMovie::getMovieId)
+                                        .toList())
+                                .build()
+                        )
+                .retrieve()
+                .bodyToFlux(MovieResponse.class)
+                .collectList()
+                .block();
 
+
+        return mapToMovieResponse(watchedMovies, result);
+    }
+
+    private List<WatchedMovieResponse> mapToMovieResponse(List<WatchedMovie> watchedMovies, List<MovieResponse> result) {
         return watchedMovies.stream()
-                .map(this::mapWatchedMovieToMovieResponse)
+                .map(watchedMovie -> {
+                    MovieResponse movieResponse = result.stream()
+                            .filter(movie -> movie.getId().equals(watchedMovie.getMovieId()))
+                            .findFirst()
+                            .orElseThrow(() -> new MovieNotFoundException("Watched movie not found"));
+
+                    return WatchedMovieResponse.builder()
+                            .id(watchedMovie.getId())
+                            .movie(movieResponse)
+                            .build();
+                })
                 .toList();
     }
 
-    private MovieResponse mapWatchedMovieToMovieResponse(WatchedMovie watchedMovie) {
-        return MovieResponse.builder()
-                .id(watchedMovie.getMovieId())
-                .movieId(watchedMovie.getMovieId())
-                .userId(watchedMovie.getUser().getId())
-                .build();
-    }
 
-    public MovieResponse getMyWatchedMovie(Long id) {
+    public WatchedMovieResponse getMyWatchedMovie(Long id) {
         log.info("Getting my watched movie with id {}", id);
 
             WatchedMovie watchedMovie = watchedMovieRepository.findById(id)
@@ -50,9 +76,23 @@ public class WatchedMovieService {
                 throw new RuntimeException("Watched movie not found");
             }
 
-            // Call the movie-service to get the watched movie
+        // Call the movie-service to get the watched movie
+        // http://movie-service/api/v1/movie/{id}
+        MovieResponse movieResponse = webClientBuilder.build()
+                .get()
+                .uri(
+                        "http://movie-service/api/v1/movie/{id}",
+                        uriBuilder -> uriBuilder
+                                .build(watchedMovie.getMovieId())
+                )
+                .retrieve()
+                .bodyToMono(MovieResponse.class)
+                .block();
 
-            return mapWatchedMovieToMovieResponse(watchedMovie);
+        return WatchedMovieResponse.builder()
+                .id(watchedMovie.getId())
+                .movie(movieResponse)
+                .build();
     }
 
     public void addWatchedMovie(Long id) {
@@ -63,6 +103,21 @@ public class WatchedMovieService {
         }
 
         // Call the movie-service to validate the movie if it exists
+        // http://movie-service/api/v1/movie/{id}
+        MovieResponse result = webClientBuilder.build()
+                .get()
+                .uri(
+                        "http://movie-service/api/v1/movie/{id}",
+                        uriBuilder -> uriBuilder
+                                .build(id)
+                )
+                .retrieve()
+                .bodyToMono(MovieResponse.class)
+                .block();
+
+        if (result == null) {
+            throw new MovieNotFoundException("Movie not found");
+        }
 
         User user = User.builder()
                 .id(1L)

@@ -1,6 +1,7 @@
 package com.radouaneoubakhane.userservice.service;
 
 
+import com.radouaneoubakhane.userservice.dto.movie.FavoriteMovieResponse;
 import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.userservice.entity.FavoriteMovie;
 import com.radouaneoubakhane.userservice.entity.User;
@@ -10,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -20,29 +22,52 @@ import java.util.List;
 public class FavoriteMovieService {
 
     final private FavoriteMovieRepository favoriteMovieRepository;
+    private final WebClient.Builder webClientBuilder;
 
-    public List<MovieResponse> getMyFavoriteMovies() {
+    public List<FavoriteMovieResponse> getMyFavoriteMovies() {
         log.info("getMyFavoriteMovies");
 
         List<FavoriteMovie> favoriteMovies = favoriteMovieRepository.findAllByUserId(1L);
 
         // Call the movie-service to get the favorite movies
+        // http://movie-service/api/v1/movie/ids?id=id
+        List<MovieResponse> result = webClientBuilder.build()
+                .get()
+                .uri(
+                        "http://movie-service/api/v1/movie/ids",
+                                uriBuilder -> uriBuilder
+                                .queryParam("id", favoriteMovies.stream()
+                                        .map(FavoriteMovie::getMovieId)
+                                        .toList())
+                                .build()
+                        )
+                .retrieve()
+                .bodyToFlux(MovieResponse.class)
+                .collectList()
+                .block();
 
+        return mapToFavoriteMovieResponse(favoriteMovies, result);
+
+    }
+
+    private List<FavoriteMovieResponse> mapToFavoriteMovieResponse(List<FavoriteMovie> favoriteMovies, List<MovieResponse> result) {
         return favoriteMovies.stream()
-                        .map(this::mapFavoriteMoviesToMovieResponse)
-                        .toList();
+                .map(favoriteMovie -> {
+                    MovieResponse movieResponse = result.stream()
+                            .filter(movie -> movie.getId().equals(favoriteMovie.getMovieId()))
+                            .findFirst()
+                            .orElseThrow(() -> new MovieNotFoundException("Favorite movie not found"));
 
+                    return FavoriteMovieResponse.builder()
+                            .id(favoriteMovie.getId())
+                            .movie(movieResponse)
+                            .build();
+                })
+                .toList();
     }
 
-    private MovieResponse mapFavoriteMoviesToMovieResponse(FavoriteMovie favoriteMovie) {
-        return MovieResponse.builder()
-                .id(favoriteMovie.getMovieId())
-                .movieId(favoriteMovie.getMovieId())
-                .userId(favoriteMovie.getUser().getId())
-                .build();
-    }
 
-    public MovieResponse getMyFavoriteMovie(Long id) {
+    public FavoriteMovieResponse getMyFavoriteMovie(Long id) {
         log.info("getMyFavoriteMovie with id {}", id);
 
         FavoriteMovie favoriteMovie = favoriteMovieRepository.findById(id)
@@ -53,8 +78,22 @@ public class FavoriteMovieService {
         }
 
         // Call the movie-service to get the favorite movie
+        // http://movie-service/api/v1/movie/{id}
+        MovieResponse result = webClientBuilder.build()
+                .get()
+                .uri(
+                        "http://movie-service/api/v1/movie/{id}",
+                        uriBuilder -> uriBuilder
+                                .build(favoriteMovie.getMovieId())
+                )
+                .retrieve()
+                .bodyToMono(MovieResponse.class)
+                .block();
 
-        return mapFavoriteMoviesToMovieResponse(favoriteMovie);
+        return FavoriteMovieResponse.builder()
+                .id(favoriteMovie.getId())
+                .movie(result)
+                .build();
     }
 
     public void addMyFavoriteMovie(Long id) {
@@ -65,6 +104,21 @@ public class FavoriteMovieService {
         }
 
         // Call the movie-service to validate if the movie exists
+        // http://movie-service/api/v1/movie/{id}
+        MovieResponse result = webClientBuilder.build()
+                .get()
+                .uri(
+                        "http://movie-service/api/v1/movie/{id}",
+                        uriBuilder -> uriBuilder
+                                .build(id)
+                )
+                .retrieve()
+                .bodyToMono(MovieResponse.class)
+                .block();
+
+        if (result == null) {
+            throw new RuntimeException("Movie not found");
+        }
 
         User user = User.builder()
                 .id(1L)

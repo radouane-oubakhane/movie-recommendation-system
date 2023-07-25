@@ -167,4 +167,12 @@ public class DirectorService {
 
         director.getMovies().remove(movie);
     }
+
+    public List<DirectorResponse> getDirectorsByIds(List<Long> id) {
+        log.info("Fetching directors with ids: {}", id);
+
+        List<Director> directors = directorRepository.findAllById(id);
+
+        return directors.stream().map(this::mapDirectorToDirectorResponse).toList();
+    }
 }

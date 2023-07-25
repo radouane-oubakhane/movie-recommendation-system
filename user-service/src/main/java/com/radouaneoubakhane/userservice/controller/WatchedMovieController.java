@@ -1,7 +1,7 @@
 package com.radouaneoubakhane.userservice.controller;
 
 
-import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
+import com.radouaneoubakhane.userservice.dto.movie.WatchedMovieResponse;
 import com.radouaneoubakhane.userservice.service.WatchedMovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,13 +17,13 @@ public class WatchedMovieController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<MovieResponse> getAllWatchedMovies() {
+    public List<WatchedMovieResponse> getAllWatchedMovies() {
         return watchedMovieService.getAllWatchedMovies();
     }
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public MovieResponse getMyWatchedMovie(@PathVariable Long id) {
+    public WatchedMovieResponse getMyWatchedMovie(@PathVariable Long id) {
         return watchedMovieService.getMyWatchedMovie(id);
     }
 

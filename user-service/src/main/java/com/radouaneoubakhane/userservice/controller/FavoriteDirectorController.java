@@ -1,7 +1,7 @@
 package com.radouaneoubakhane.userservice.controller;
 
 
-import com.radouaneoubakhane.userservice.dto.director.DirectorResponse;
+import com.radouaneoubakhane.userservice.dto.director.FavoriteDirectorResponse;
 import com.radouaneoubakhane.userservice.service.FavoriteDirectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,13 +18,13 @@ public class FavoriteDirectorController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<DirectorResponse> getMyFavoriteDirectors() {
+    public List<FavoriteDirectorResponse> getMyFavoriteDirectors() {
         return favoriteDirectorService.getMyFavoriteDirectors();
     }
     
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public DirectorResponse getMyFavoriteDirector(@PathVariable Long id) {
+    public FavoriteDirectorResponse getMyFavoriteDirector(@PathVariable Long id) {
         return favoriteDirectorService.getMyFavoriteDirector(id);
     }
     

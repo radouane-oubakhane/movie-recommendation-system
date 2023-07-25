@@ -1,7 +1,7 @@
 package com.radouaneoubakhane.userservice.controller;
 
 
-import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
+import com.radouaneoubakhane.userservice.dto.movie.FavoriteMovieResponse;
 import com.radouaneoubakhane.userservice.service.FavoriteMovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,13 +19,13 @@ public class FavoriteMovieController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<MovieResponse> getMyFavoriteMovies() {
+    public List<FavoriteMovieResponse> getMyFavoriteMovies() {
         return favoriteMovieService.getMyFavoriteMovies();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public MovieResponse getMyFavoriteMovie(@PathVariable Long id) {
+    public FavoriteMovieResponse getMyFavoriteMovie(@PathVariable Long id) {
         return favoriteMovieService.getMyFavoriteMovie(id);
     }
 

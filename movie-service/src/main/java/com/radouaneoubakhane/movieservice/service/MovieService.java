@@ -212,4 +212,12 @@ public class MovieService {
 
         actor.getMovies().remove(movie);
     }
+
+    public List<MovieResponse> getMoviesByIds(List<Long> id) {
+        log.info("Fetching movies with ids: {}", id);
+
+        List<Movie> movies = movieRepository.findAllById(id);
+
+        return movies.stream().map(this::mapMovieToMovieResponse).toList();
+    }
 }

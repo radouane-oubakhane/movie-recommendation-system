@@ -1,6 +1,7 @@
 package com.radouaneoubakhane.userservice.service;
 
 import com.radouaneoubakhane.userservice.dto.actor.ActorResponse;
+import com.radouaneoubakhane.userservice.dto.actor.FavoriteActorResponse;
 import com.radouaneoubakhane.userservice.entity.FavoriteActor;
 import com.radouaneoubakhane.userservice.entity.User;
 import com.radouaneoubakhane.userservice.exception.actor.ActorNotFoundException;
@@ -23,14 +24,14 @@ public class FavoriteActorService {
     private final FavoriteActorRepository favoriteActorRepository;
     private final WebClient.Builder webClientBuilder;
 
-    public List<ActorResponse> getMyFavoriteActors() {
+    public List<FavoriteActorResponse> getMyFavoriteActors() {
         log.info("Getting my favorite actors");
 
-        List<FavoriteActor > favoriteActors = favoriteActorRepository.findAllByUserId(1L);
+        List<FavoriteActor> favoriteActors = favoriteActorRepository.findAllByUserId(1L);
 
         // Call the movie-service to get the favorite actors by ids and return them as a list
-        // http://movie-service/api/v1/actor/ids?id=1&id=2&id=3
-        return webClientBuilder.build()
+        // http://movie-service/api/v1/actor/ids?id=id
+        List<ActorResponse> result = webClientBuilder.build()
                 .get()
                 .uri(
                         "http://movie-service/api/v1/actor/ids",
@@ -45,9 +46,26 @@ public class FavoriteActorService {
                 .collectList()
                 .block();
 
+        return mapToFavoriteActorResponse(favoriteActors, result);
     }
 
-    public ActorResponse getMyFavoriteActor(Long id) {
+    private List<FavoriteActorResponse> mapToFavoriteActorResponse(List<FavoriteActor> favoriteActors, List<ActorResponse> result) {
+        return favoriteActors.stream()
+                .map(favoriteActor -> {
+                    ActorResponse actorResponse = result.stream()
+                            .filter(actor -> actor.getId().equals(favoriteActor.getActorId()))
+                            .findFirst()
+                            .orElseThrow(() -> new ActorNotFoundException("Favorite actor not found"));
+
+                    return FavoriteActorResponse.builder()
+                            .id(favoriteActor.getId())
+                            .actor(actorResponse)
+                            .build();
+                })
+                .toList();
+    }
+
+    public FavoriteActorResponse getMyFavoriteActor(Long id) {
         log.info("Getting my favorite actor with id {}", id);
 
         FavoriteActor favoriteActor = favoriteActorRepository.findById(id)
@@ -60,16 +78,21 @@ public class FavoriteActorService {
         // Call the movie-service to get the favorite actor by id and return it
         // http://movie-service/api/v1/actor/{id}
 
-        return webClientBuilder.build()
+        ActorResponse result = webClientBuilder.build()
                 .get()
                 .uri(
                         "http://movie-service/api/v1/actor/{id}",
                         uriBuilder -> uriBuilder
-                                .build(id)
+                                .build(favoriteActor.getActorId())
                 )
                 .retrieve()
                 .bodyToMono(ActorResponse.class)
                 .block();
+
+        return FavoriteActorResponse.builder()
+                .id(favoriteActor.getId())
+                .actor(result)
+                .build();
     }
 
     public void addMyFavoriteActor(Long id) {

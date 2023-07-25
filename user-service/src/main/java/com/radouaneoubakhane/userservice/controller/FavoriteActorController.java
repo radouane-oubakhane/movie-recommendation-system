@@ -1,7 +1,7 @@
 package com.radouaneoubakhane.userservice.controller;
 
 
-import com.radouaneoubakhane.userservice.dto.actor.ActorResponse;
+import com.radouaneoubakhane.userservice.dto.actor.FavoriteActorResponse;
 import com.radouaneoubakhane.userservice.service.FavoriteActorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,13 +18,13 @@ public class FavoriteActorController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ActorResponse> getMyFavoriteActors() {
+    public List<FavoriteActorResponse> getMyFavoriteActors() {
         return favoriteActorService.getMyFavoriteActors();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ActorResponse getMyFavoriteActor(@PathVariable Long id) {
+    public FavoriteActorResponse getMyFavoriteActor(@PathVariable Long id) {
         return favoriteActorService.getMyFavoriteActor(id);
     }
 

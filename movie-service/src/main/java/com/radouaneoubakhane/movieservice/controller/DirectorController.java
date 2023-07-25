@@ -74,4 +74,11 @@ public class DirectorController {
     public void removeDirectorMovie(@PathVariable Long directorId, @PathVariable Long movieId) {
         directorService.removeDirectorMovie(directorId, movieId);
     }
+
+    // Endpoints for the user-service
+    @GetMapping("/ids")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DirectorResponse> getDirectorsByIds(@RequestParam List<Long> id) {
+        return directorService.getDirectorsByIds(id);
+    }
 }
