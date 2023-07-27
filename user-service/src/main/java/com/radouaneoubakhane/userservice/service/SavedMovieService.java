@@ -34,7 +34,7 @@ public class SavedMovieService {
         List<MovieResponse> result = webClientBuilder.build()
                 .get()
                 .uri(
-                        "http://movie-service/api/v1/movie/ids",
+                        "lb://movie-service/api/v1/movies/ids",
                                 uriBuilder -> uriBuilder
                                 .queryParam("id", savedMovies.stream()
                                         .map(SavedMovie::getMovieId)
@@ -81,7 +81,7 @@ public class SavedMovieService {
         MovieResponse movieResponse = webClientBuilder.build()
                 .get()
                 .uri(
-                        "http://movie-service/api/v1/movie/{id}",
+                        "lb://movie-service/api/v1/movies/{id}",
                         uriBuilder -> uriBuilder
                                 .build(savedMovie.getMovieId())
                 )
@@ -107,7 +107,7 @@ public class SavedMovieService {
         MovieResponse result = webClientBuilder.build()
                 .get()
                 .uri(
-                        "http://movie-service/api/v1/movie/{id}",
+                        "lb://movie-service/api/v1/movies/{id}",
                         uriBuilder -> uriBuilder
                                 .build(id)
                 )

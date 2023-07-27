@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/watched/movie")
+@RequestMapping("/api/v1/watched/movies")
 public class WatchedMovieController {
     private final WatchedMovieService watchedMovieService;
 

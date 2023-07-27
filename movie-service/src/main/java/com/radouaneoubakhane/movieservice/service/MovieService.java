@@ -7,6 +7,7 @@ import com.radouaneoubakhane.movieservice.entity.Director;
 import com.radouaneoubakhane.movieservice.entity.Movie;
 import com.radouaneoubakhane.movieservice.entity.Rating;
 import com.radouaneoubakhane.movieservice.enums.Genre;
+import com.radouaneoubakhane.movieservice.event.NewMovieAddedEvent;
 import com.radouaneoubakhane.movieservice.exception.Actor.ActorNotFoundException;
 import com.radouaneoubakhane.movieservice.exception.Movie.MovieNotFoundException;
 import com.radouaneoubakhane.movieservice.repository.ActorRepository;
@@ -14,6 +15,7 @@ import com.radouaneoubakhane.movieservice.repository.MovieRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
     private final ActorRepository actorRepository;
+    private final KafkaTemplate<String, NewMovieAddedEvent> kafkaTemplate;
 
     public List<MovieResponse> getMovies() {
         log.info("Fetching all movies");
@@ -103,6 +106,16 @@ public class MovieService {
         log.info("Creating movie: {}", movieRequest);
 
         Movie movie = mapMovieRequestToMovie(movieRequest);
+
+        kafkaTemplate.send("new-movie-added", NewMovieAddedEvent.builder()
+                .id(movie.getId())
+                .title(movie.getTitle())
+                .description(movie.getDescription())
+                .poster(movie.getPoster())
+                .releaseDate(movie.getReleaseDate())
+                .duration(movie.getDuration())
+                .language(movie.getLanguage())
+                .build());
 
         return mapMovieToMovieResponse(movieRepository.save(movie));
     }

@@ -30,11 +30,11 @@ public class FavoriteActorService {
         List<FavoriteActor> favoriteActors = favoriteActorRepository.findAllByUserId(1L);
 
         // Call the movie-service to get the favorite actors by ids and return them as a list
-        // http://movie-service/api/v1/actor/ids?id=id
+        // http://movie-service/api/v1/actors/ids?id=id
         List<ActorResponse> result = webClientBuilder.build()
                 .get()
                 .uri(
-                        "http://movie-service/api/v1/actor/ids",
+                        "lb://movie-service/api/v1/actors/ids",
                                 uriBuilder -> uriBuilder
                                 .queryParam("id", favoriteActors.stream()
                                         .map(FavoriteActor::getActorId)
@@ -76,12 +76,12 @@ public class FavoriteActorService {
         }
 
         // Call the movie-service to get the favorite actor by id and return it
-        // http://movie-service/api/v1/actor/{id}
+        // http://movie-service/api/v1/actors/{id}
 
         ActorResponse result = webClientBuilder.build()
                 .get()
                 .uri(
-                        "http://movie-service/api/v1/actor/{id}",
+                        "lb://movie-service/api/v1/actors/{id}",
                         uriBuilder -> uriBuilder
                                 .build(favoriteActor.getActorId())
                 )
@@ -107,7 +107,7 @@ public class FavoriteActorService {
         ActorResponse actorResponse = webClientBuilder.build()
                 .get()
                 .uri(
-                        "http://movie-service/api/v1/actor/{id}",
+                        "lb://movie-service/api/v1/actors/{id}",
                         uriBuilder -> uriBuilder
                                 .build(id)
                 )

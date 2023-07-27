@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/watchlist/movie")
+@RequestMapping("/api/v1/watchlist/movies")
 public class WatchlistMovieController {
     private final WatchlistMovieService watchlistMovieService;
 

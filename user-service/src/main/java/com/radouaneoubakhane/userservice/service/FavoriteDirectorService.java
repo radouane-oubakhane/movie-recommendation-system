@@ -36,7 +36,7 @@ public class FavoriteDirectorService {
         List<DirectorResponse> result = webClientBuilder.build()
                 .get()
                 .uri(
-                        "http://movie-service/api/v1/director/ids",
+                        "lb://movie-service/api/v1/directors/ids",
                                 uriBuilder -> uriBuilder
                                 .queryParam("id", favoriteDirectors.stream()
                                         .map(FavoriteDirector::getDirectorId)
@@ -82,7 +82,7 @@ public class FavoriteDirectorService {
         DirectorResponse result = webClientBuilder.build()
                 .get()
                 .uri(
-                        "http://movie-service/api/v1/director/{id}",
+                        "lb://movie-service/api/v1/directors/{id}",
                                 uriBuilder -> uriBuilder
                                 .build(favoriteDirector.getDirectorId())
                         )
@@ -109,7 +109,7 @@ public class FavoriteDirectorService {
         DirectorResponse result = webClientBuilder.build()
                 .get()
                 .uri(
-                        "http://movie-service/api/v1/director/{id}",
+                        "lb://movie-service/api/v1/directors/{id}",
                                 uriBuilder -> uriBuilder
                                 .build(id)
                         )
