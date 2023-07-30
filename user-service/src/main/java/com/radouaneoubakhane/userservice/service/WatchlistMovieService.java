@@ -1,148 +1,16 @@
 package com.radouaneoubakhane.userservice.service;
 
-
-import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.userservice.dto.movie.WatchlistMovieResponse;
-import com.radouaneoubakhane.userservice.entity.User;
-import com.radouaneoubakhane.userservice.entity.WatchlistMovie;
-import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
-import com.radouaneoubakhane.userservice.repository.WatchlistMovieRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-@Transactional
-@Slf4j
-public class WatchlistMovieService {
-    private final WatchlistMovieRepository watchlistMovieRepository;
-    private final WebClient.Builder webClientBuilder;
+public interface WatchlistMovieService {
+    List<WatchlistMovieResponse> getAllWatchlistMovies();
 
+    WatchlistMovieResponse getMyWatchlistMovie(Long id);
 
-    public List<WatchlistMovieResponse> getAllWatchlistMovies() {
-        log.info("Getting all watchlist movies");
+    void addWatchlistMovie(Long id);
 
-        List<WatchlistMovie> watchlistMovies = watchlistMovieRepository.findAllByUserId(1L);
-
-        // Call the movie-service to get the watchlist movies
-        // http://movie-service/api/v1/movie/ids?id=id
-        List<MovieResponse> result = webClientBuilder.build()
-                .get()
-                .uri(
-                        "lb://movie-service/api/v1/movies/ids",
-                                uriBuilder -> uriBuilder
-                                .queryParam("id", watchlistMovies.stream()
-                                        .map(WatchlistMovie::getMovieId)
-                                        .toList())
-                                .build()
-                        )
-                .retrieve()
-                .bodyToFlux(MovieResponse.class)
-                .collectList()
-                .block();
-
-
-        return mapToMovieResponse(watchlistMovies, result);
-    }
-
-    private List<WatchlistMovieResponse> mapToMovieResponse(List<WatchlistMovie> watchlistMovies, List<MovieResponse> result) {
-        return watchlistMovies.stream()
-                .map(watchlistMovie -> {
-                    MovieResponse movieResponse = result.stream()
-                            .filter(movie -> movie.getId().equals(watchlistMovie.getMovieId()))
-                            .findFirst()
-                            .orElseThrow(() -> new MovieNotFoundException("Watchlist movie not found"));
-
-                    return WatchlistMovieResponse.builder()
-                            .id(watchlistMovie.getId())
-                            .movie(movieResponse)
-                            .build();
-                })
-                .toList();
-    }
-
-
-    public WatchlistMovieResponse getMyWatchlistMovie(Long id) {
-        log.info("Getting my watchlist movie with id {}", id);
-
-        WatchlistMovie watchlistMovie = watchlistMovieRepository.findById(id)
-                .orElseThrow(() -> new MovieNotFoundException("Watchlist movie not found"));
-
-        if (watchlistMovie.getUser().getId() != 1L) {
-            throw new RuntimeException("Watchlist movie not found");
-        }
-
-        // Call the movie-service to get the watchlist movie
-        // http://movie-service/api/v1/movie/{id}
-        MovieResponse movieResponse = webClientBuilder.build()
-                .get()
-                .uri(
-                        "lb://movie-service/api/v1/movies/{id}",
-                        uriBuilder -> uriBuilder
-                                .build(watchlistMovie.getMovieId())
-                )
-                .retrieve()
-                .bodyToMono(MovieResponse.class)
-                .block();
-
-        return WatchlistMovieResponse.builder()
-                .id(watchlistMovie.getId())
-                .movie(movieResponse)
-                .build();
-    }
-
-    public void addWatchlistMovie(Long id) {
-        log.info("Adding my watchlist movie with id {}", id);
-
-        if (watchlistMovieRepository.existsById(id)) {
-            throw new RuntimeException("Watchlist movie already exists");
-        }
-
-        // Call the movie-service to validate if it exists
-        // http://movie-service/api/v1/movie/{id}
-        MovieResponse result = webClientBuilder.build()
-                .get()
-                .uri(
-                        "lb://movie-service/api/v1/movies/{id}",
-                        uriBuilder -> uriBuilder
-                                .build(id)
-                )
-                .retrieve()
-                .bodyToMono(MovieResponse.class)
-                .block();
-
-        if (result == null) {
-            throw new RuntimeException("Movie not found");
-        }
-
-        User user = User.builder()
-                .id(1L)
-                .build();
-
-        WatchlistMovie watchlistMovie = WatchlistMovie.builder()
-                .movieId(id)
-                .user(user)
-                .build();
-
-        watchlistMovieRepository.save(watchlistMovie);
-    }
-
-
-    public void deleteWatchlistMovie(Long id) {
-        log.info("Deleting my watchlist movie with id {}", id);
-
-        WatchlistMovie watchlistMovie = watchlistMovieRepository.findById(id)
-                .orElseThrow(() -> new MovieNotFoundException("Watchlist movie not found"));
-
-        if (watchlistMovie.getUser().getId() != 1L) {
-            throw new RuntimeException("Watchlist movie not found");
-        }
-
-        watchlistMovieRepository.delete(watchlistMovie);
-    }
+    void deleteWatchlistMovie(Long id);
 }
+
