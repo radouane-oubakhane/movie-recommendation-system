@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.movieservice.dto.Movie;
+package com.radouaneoubakhane.movieservice.dto.actor;
 
 
 import com.radouaneoubakhane.movieservice.enums.Genre;
@@ -13,13 +13,12 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MovieRequest {
+public class MovieResponse {
+    private Long id;
     private String title;
-    private String description;
     private String poster;
     private LocalDate releaseDate;
-    private int duration;
-    private String language;
-    private String country;
+    private double averageRating;
+    private DirectorResponse director;
     private Genre genre;
 }

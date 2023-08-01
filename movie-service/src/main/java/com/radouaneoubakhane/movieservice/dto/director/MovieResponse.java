@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.movieservice.dto.Rating;
+package com.radouaneoubakhane.movieservice.dto.director;
 
 
 import com.radouaneoubakhane.movieservice.enums.Genre;
@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -14,6 +16,8 @@ import lombok.NoArgsConstructor;
 public class MovieResponse {
     private Long id;
     private String title;
+    private String poster;
+    private LocalDate releaseDate;
     private double averageRating;
     private Genre genre;
 }

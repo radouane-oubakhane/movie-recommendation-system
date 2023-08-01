@@ -1,7 +1,7 @@
 package com.radouaneoubakhane.movieservice.service;
 
-import com.radouaneoubakhane.movieservice.dto.Rating.RatingRequest;
-import com.radouaneoubakhane.movieservice.dto.Rating.RatingResponse;
+import com.radouaneoubakhane.movieservice.dto.rating.RatingRequest;
+import com.radouaneoubakhane.movieservice.dto.rating.RatingResponse;
 
 import java.util.List;
 

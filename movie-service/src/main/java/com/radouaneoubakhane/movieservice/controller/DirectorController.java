@@ -1,9 +1,9 @@
 package com.radouaneoubakhane.movieservice.controller;
 
 
-import com.radouaneoubakhane.movieservice.dto.Director.DirectorRequest;
-import com.radouaneoubakhane.movieservice.dto.Director.DirectorResponse;
-import com.radouaneoubakhane.movieservice.dto.Director.MovieResponse;
+import com.radouaneoubakhane.movieservice.dto.director.DirectorRequest;
+import com.radouaneoubakhane.movieservice.dto.director.DirectorResponse;
+import com.radouaneoubakhane.movieservice.dto.director.MovieResponse;
 import com.radouaneoubakhane.movieservice.service.DirectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

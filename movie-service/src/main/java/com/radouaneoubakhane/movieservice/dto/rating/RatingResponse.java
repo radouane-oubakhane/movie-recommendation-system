@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.movieservice.dto.Rating;
+package com.radouaneoubakhane.movieservice.dto.rating;
 
 
 import lombok.AllArgsConstructor;
@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RatingRequest {
+public class RatingResponse {
+    private Long id;
     private Long userId;
     private int rating;
     private String review;
     private String timestamp;
-    private Long movieId;
+    private MovieResponse movie;
 }

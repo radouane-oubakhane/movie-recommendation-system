@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.movieservice.dto.Actor;
+package com.radouaneoubakhane.movieservice.dto.actor;
 
 
 import lombok.AllArgsConstructor;

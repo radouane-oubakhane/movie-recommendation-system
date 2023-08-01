@@ -1,8 +1,8 @@
 package com.radouaneoubakhane.movieservice.controller;
 
 
-import com.radouaneoubakhane.movieservice.dto.Rating.RatingRequest;
-import com.radouaneoubakhane.movieservice.dto.Rating.RatingResponse;
+import com.radouaneoubakhane.movieservice.dto.rating.RatingRequest;
+import com.radouaneoubakhane.movieservice.dto.rating.RatingResponse;
 import com.radouaneoubakhane.movieservice.service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

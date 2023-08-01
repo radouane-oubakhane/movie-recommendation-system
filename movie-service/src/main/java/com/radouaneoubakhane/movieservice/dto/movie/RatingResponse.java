@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.movieservice.dto.Rating;
+package com.radouaneoubakhane.movieservice.dto.movie;
 
 
 import lombok.AllArgsConstructor;
@@ -16,5 +16,4 @@ public class RatingResponse {
     private int rating;
     private String review;
     private String timestamp;
-    private MovieResponse movie;
 }

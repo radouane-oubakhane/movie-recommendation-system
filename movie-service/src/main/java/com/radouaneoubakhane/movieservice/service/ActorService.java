@@ -1,8 +1,8 @@
 package com.radouaneoubakhane.movieservice.service;
 
-import com.radouaneoubakhane.movieservice.dto.Actor.ActorRequest;
-import com.radouaneoubakhane.movieservice.dto.Actor.ActorResponse;
-import com.radouaneoubakhane.movieservice.dto.Actor.MovieResponse;
+import com.radouaneoubakhane.movieservice.dto.actor.ActorRequest;
+import com.radouaneoubakhane.movieservice.dto.actor.ActorResponse;
+import com.radouaneoubakhane.movieservice.dto.actor.MovieResponse;
 
 import java.util.List;
 
@@ -27,3 +27,4 @@ public interface ActorService {
 
     List<ActorResponse> getActorsByIds(List<Long> id);
 }
+

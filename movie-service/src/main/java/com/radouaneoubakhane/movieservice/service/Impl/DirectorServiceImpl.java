@@ -1,16 +1,17 @@
 package com.radouaneoubakhane.movieservice.service.Impl;
 
 
-import com.radouaneoubakhane.movieservice.dto.Director.DirectorRequest;
-import com.radouaneoubakhane.movieservice.dto.Director.DirectorResponse;
-import com.radouaneoubakhane.movieservice.dto.Director.MovieResponse;
+import com.radouaneoubakhane.movieservice.dto.director.DirectorRequest;
+import com.radouaneoubakhane.movieservice.dto.director.DirectorResponse;
+import com.radouaneoubakhane.movieservice.dto.director.MovieResponse;
 import com.radouaneoubakhane.movieservice.entity.Director;
 import com.radouaneoubakhane.movieservice.entity.Movie;
 import com.radouaneoubakhane.movieservice.exception.Director.DirectorNotFoundException;
 import com.radouaneoubakhane.movieservice.exception.Movie.MovieNotFoundException;
+import com.radouaneoubakhane.movieservice.mapper.DirectorMapper;
 import com.radouaneoubakhane.movieservice.repository.DirectorRepository;
-import com.radouaneoubakhane.movieservice.repository.MovieRepository;
 import com.radouaneoubakhane.movieservice.service.DirectorService;
+import com.radouaneoubakhane.movieservice.service.MovieService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ import java.util.List;
 public class DirectorServiceImpl implements DirectorService {
 
     private final DirectorRepository directorRepository;
-    private final MovieRepository movieRepository;
+    private final MovieService movieService;
 
     public List<DirectorResponse> getDirectors() {
         log.info("Fetching all directors");
@@ -140,15 +141,28 @@ public class DirectorServiceImpl implements DirectorService {
                 () -> new DirectorNotFoundException("Director not found")
         );
 
-        Movie movie = movieRepository.findById(movieId).orElseThrow(
-                () -> new DirectorNotFoundException("Movie not found")
+        MovieResponse movieResponse = DirectorMapper.map(
+                movieService.getMovie(movieId)
         );
 
-        if (director.getMovies().contains(movie)) {
-            throw new IllegalArgumentException("Movie already exists");
+        if (movieResponse == null) {
+            throw new MovieNotFoundException("Movie not found");
         }
 
-        director.getMovies().add(movie);
+        if (director.getMovies().stream().map(Movie::getId).anyMatch(id -> id.equals(movieId))) {
+            throw new IllegalArgumentException("Movie already added to director");
+        }
+
+        director.getMovies().add(
+                Movie.builder()
+                        .id(movieResponse.getId())
+                        .title(movieResponse.getTitle())
+                        .poster(movieResponse.getPoster())
+                        .releaseDate(movieResponse.getReleaseDate())
+                        .averageRating(movieResponse.getAverageRating())
+                        .genre(movieResponse.getGenre())
+                        .build()
+        );
     }
 
     public void removeDirectorMovie(Long directorId, Long movieId) {
@@ -158,15 +172,20 @@ public class DirectorServiceImpl implements DirectorService {
                 () -> new DirectorNotFoundException("Director not found")
         );
 
-        Movie movie = movieRepository.findById(movieId).orElseThrow(
-                () -> new DirectorNotFoundException("Movie not found")
+        MovieResponse movieResponse = DirectorMapper.map(
+                movieService.getMovie(movieId)
         );
 
-        if (!director.getMovies().contains(movie)) {
+        if (movieResponse == null) {
             throw new MovieNotFoundException("Movie not found");
         }
 
-        director.getMovies().remove(movie);
+
+        Movie movieToRemove = director.getMovies().stream().filter(movie -> movie.getId().equals(movieId)).findFirst().orElseThrow(
+                () -> new IllegalArgumentException("Movie not found in director")
+        );
+
+        director.getMovies().remove(movieToRemove);
     }
 
     public List<DirectorResponse> getDirectorsByIds(List<Long> id) {

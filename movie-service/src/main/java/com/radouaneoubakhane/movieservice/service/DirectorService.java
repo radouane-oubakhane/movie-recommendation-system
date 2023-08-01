@@ -1,8 +1,8 @@
 package com.radouaneoubakhane.movieservice.service;
 
-import com.radouaneoubakhane.movieservice.dto.Director.DirectorRequest;
-import com.radouaneoubakhane.movieservice.dto.Director.DirectorResponse;
-import com.radouaneoubakhane.movieservice.dto.Director.MovieResponse;
+import com.radouaneoubakhane.movieservice.dto.director.DirectorRequest;
+import com.radouaneoubakhane.movieservice.dto.director.DirectorResponse;
+import com.radouaneoubakhane.movieservice.dto.director.MovieResponse;
 
 import java.util.List;
 

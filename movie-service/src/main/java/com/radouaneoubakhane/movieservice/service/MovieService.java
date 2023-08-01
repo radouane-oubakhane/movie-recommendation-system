@@ -1,8 +1,8 @@
 package com.radouaneoubakhane.movieservice.service;
 
-import com.radouaneoubakhane.movieservice.dto.Movie.ActorResponse;
-import com.radouaneoubakhane.movieservice.dto.Movie.MovieRequest;
-import com.radouaneoubakhane.movieservice.dto.Movie.MovieResponse;
+import com.radouaneoubakhane.movieservice.dto.movie.ActorResponse;
+import com.radouaneoubakhane.movieservice.dto.movie.MovieRequest;
+import com.radouaneoubakhane.movieservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.movieservice.enums.Genre;
 
 import java.util.List;
@@ -17,8 +17,7 @@ public interface MovieService {
     MovieResponse updateMovie(Long id, MovieRequest movieRequest);
 
     void deleteMovie(Long id);
-
-    List<MovieResponse> searchMoviesByGenre(Genre genre);
+    boolean existsById(Long id);
 
     List<ActorResponse> getMovieActors(Long movieId);
 
@@ -29,4 +28,7 @@ public interface MovieService {
     List<MovieResponse> getMoviesByIds(List<Long> id);
 
     List<MovieResponse> searchMovies(String title);
+
+    List<MovieResponse> searchMoviesByGenre(Genre genre);
+
 }

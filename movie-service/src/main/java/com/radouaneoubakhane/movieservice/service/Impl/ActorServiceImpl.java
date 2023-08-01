@@ -1,32 +1,34 @@
 package com.radouaneoubakhane.movieservice.service.Impl;
 
-import com.radouaneoubakhane.movieservice.dto.Actor.DirectorResponse;
-import com.radouaneoubakhane.movieservice.dto.Actor.MovieResponse;
-import com.radouaneoubakhane.movieservice.dto.Actor.ActorRequest;
-import com.radouaneoubakhane.movieservice.dto.Actor.ActorResponse;
+import com.radouaneoubakhane.movieservice.dto.actor.DirectorResponse;
+import com.radouaneoubakhane.movieservice.dto.actor.MovieResponse;
+import com.radouaneoubakhane.movieservice.dto.actor.ActorRequest;
+import com.radouaneoubakhane.movieservice.dto.actor.ActorResponse;
 import com.radouaneoubakhane.movieservice.entity.Actor;
 import com.radouaneoubakhane.movieservice.entity.Director;
 import com.radouaneoubakhane.movieservice.entity.Movie;
 import com.radouaneoubakhane.movieservice.exception.Actor.ActorNotFoundException;
 import com.radouaneoubakhane.movieservice.exception.Movie.MovieNotFoundException;
+import com.radouaneoubakhane.movieservice.mapper.ActorMapper;
 import com.radouaneoubakhane.movieservice.repository.ActorRepository;
-import com.radouaneoubakhane.movieservice.repository.MovieRepository;
 import com.radouaneoubakhane.movieservice.service.ActorService;
+import com.radouaneoubakhane.movieservice.service.MovieService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 @Transactional
 @Slf4j
 public class ActorServiceImpl implements ActorService {
 
     private final ActorRepository actorRepository;
-    private final MovieRepository movieRepository;
+    private final MovieService movieService;
 
     public List<ActorResponse> getActors() {
         log.info("Fetching all actors");
@@ -151,15 +153,33 @@ public class ActorServiceImpl implements ActorService {
                 () -> new ActorNotFoundException("Actor not found")
         );
 
-        Movie movie = movieRepository.findById(movieId).orElseThrow(
-                () -> new MovieNotFoundException("Movie not found")
+        MovieResponse movieResponse = ActorMapper.map(
+                movieService.getMovie(movieId)
         );
 
-        if (actor.getMovies().contains(movie)) {
+        if (movieResponse == null) {
+            throw new MovieNotFoundException("Movie not found");
+        }
+
+        if (actor.getMovies().stream().map(Movie::getId).toList().contains(movieId)) {
             throw new IllegalArgumentException("Movie already added to actor");
         }
 
-        actor.getMovies().add(movie);
+        actor.getMovies().add(
+                Movie.builder()
+                        .id(movieResponse.getId())
+                        .title(movieResponse.getTitle())
+                        .poster(movieResponse.getPoster())
+                        .releaseDate(movieResponse.getReleaseDate())
+                        .averageRating(movieResponse.getAverageRating())
+                        .director(Director.builder()
+                                .id(movieResponse.getDirector().getId())
+                                .firstName(movieResponse.getDirector().getFirstName())
+                                .lastName(movieResponse.getDirector().getLastName())
+                                .build())
+                        .genre(movieResponse.getGenre())
+                        .build()
+        );
     }
 
     public void removeMovieFromActor(Long actorId, Long movieId) {
@@ -169,15 +189,18 @@ public class ActorServiceImpl implements ActorService {
                 () -> new ActorNotFoundException("Actor not found")
         );
 
-        Movie movie = movieRepository.findById(movieId).orElseThrow(
-                () -> new MovieNotFoundException("Movie not found")
+        MovieResponse movieResponse = ActorMapper.map(
+                movieService.getMovie(movieId)
         );
 
-        if (!actor.getMovies().contains(movie)) {
+        if (movieResponse == null) {
             throw new MovieNotFoundException("Movie not found");
         }
 
-        actor.getMovies().remove(movie);
+        Movie movieToRemove = actor.getMovies().stream().filter(movie -> movie.getId().equals(movieId)).findFirst().orElseThrow(
+                () -> new MovieNotFoundException("Movie not found")
+        );
+        actor.getMovies().remove(movieToRemove);
     }
 
     public List<ActorResponse> getActorsByIds(List<Long> id) {

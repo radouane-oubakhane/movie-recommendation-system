@@ -1,9 +1,9 @@
 package com.radouaneoubakhane.movieservice.controller;
 
 
-import com.radouaneoubakhane.movieservice.dto.Movie.ActorResponse;
-import com.radouaneoubakhane.movieservice.dto.Movie.MovieRequest;
-import com.radouaneoubakhane.movieservice.dto.Movie.MovieResponse;
+import com.radouaneoubakhane.movieservice.dto.movie.ActorResponse;
+import com.radouaneoubakhane.movieservice.dto.movie.MovieRequest;
+import com.radouaneoubakhane.movieservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.movieservice.enums.Genre;
 import com.radouaneoubakhane.movieservice.service.MovieService;
 import lombok.RequiredArgsConstructor;
