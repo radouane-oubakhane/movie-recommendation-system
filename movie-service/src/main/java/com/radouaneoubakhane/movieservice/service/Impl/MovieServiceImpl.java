@@ -18,6 +18,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,14 @@ public class MovieServiceImpl implements MovieService {
     private final ActorService actorService;
     private final KafkaTemplate<String, NewMovieAddedEvent> kafkaTemplate;
 
+
+    public Page<MovieResponse> getAllMovies(Pageable pageable) {
+        log.info("Fetching all movies");
+
+        Page<Movie> movies = movieRepository.findAll(pageable);
+
+        return movies.map(this::mapMovieToMovieResponse);
+    }
 
     public List<MovieResponse> getMovies() {
         log.info("Fetching all movies");

@@ -7,6 +7,10 @@ import com.radouaneoubakhane.movieservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.movieservice.enums.Genre;
 import com.radouaneoubakhane.movieservice.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,12 +23,23 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    // CRUD operations
+    // CRUD operations ==========================================================
+    // ==========================================================================
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<MovieResponse> getMovies() {
-        return movieService.getMovies();
+    public Page<MovieResponse> getMovies(@RequestParam(defaultValue = "0") Integer pageNo,
+                                         @RequestParam(defaultValue = "10") Integer pageSize,
+                                         @RequestParam(defaultValue = "title,asc") String[] sort) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, getSortOrder(sort));
+        return movieService.getAllMovies(pageable);
     }
+
+
+//    @GetMapping
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<MovieResponse> getMovies() {
+//        return movieService.getMovies();
+//    }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -83,12 +98,27 @@ public class MovieController {
         movieService.removeActorFromMovie(movieId, actorId);
     }
 
-    // Endpoints for the user-service
+    // Endpoints for the user-service ===========================================
+    // ==========================================================================
     @GetMapping("/ids")
     @ResponseStatus(HttpStatus.OK)
     public List<MovieResponse> getMoviesByIds(@RequestParam List<Long> id) {
         return movieService.getMoviesByIds(id);
     }
+
+
+    // Helper methods for sorting and pagination ================================
+    // ==========================================================================
+    private Sort getSortOrder(String[] sort) {
+        if (sort.length > 1) {
+            String sortBy = sort[0];
+            String sortOrder = sort[1].equalsIgnoreCase("desc") ? "desc" : "asc";
+            return Sort.by(Sort.Direction.fromString(sortOrder), sortBy);
+        }
+        return Sort.unsorted();
+    }
+
+
 
 }
 

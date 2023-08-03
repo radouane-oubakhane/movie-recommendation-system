@@ -4,10 +4,15 @@ import com.radouaneoubakhane.movieservice.dto.movie.ActorResponse;
 import com.radouaneoubakhane.movieservice.dto.movie.MovieRequest;
 import com.radouaneoubakhane.movieservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.movieservice.enums.Genre;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface MovieService {
+
+    Page<MovieResponse> getAllMovies(Pageable pageable);
+
     List<MovieResponse> getMovies();
 
     MovieResponse getMovie(Long id);
