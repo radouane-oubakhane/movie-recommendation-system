@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface MovieService {
 
-    Page<MovieResponse> getAllMovies(Pageable pageable);
+    Page<MovieResponse> getMovies(Pageable pageable);
 
     List<MovieResponse> getMovies();
 

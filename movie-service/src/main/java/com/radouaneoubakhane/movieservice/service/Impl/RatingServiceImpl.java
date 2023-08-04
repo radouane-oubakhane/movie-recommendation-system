@@ -15,6 +15,8 @@ import com.radouaneoubakhane.movieservice.service.RatingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,12 +30,23 @@ public class RatingServiceImpl implements RatingService {
     private final RatingRepository ratingRepository;
     private final MovieService movieService;
 
+
+
     public List<RatingResponse> getRatings() {
         log.info("Fetching all ratings");
 
         List<Rating> ratings = ratingRepository.findAll();
 
         return ratings.stream().map(this::mapRatingToRatingResponse).toList();
+    }
+
+    @Override
+    public Page<RatingResponse> getRatings(Pageable pageable) {
+        log.info("Fetching all ratings");
+
+        Page<Rating> ratings = ratingRepository.findAll(pageable);
+
+        return ratings.map(this::mapRatingToRatingResponse);
     }
 
     private RatingResponse mapRatingToRatingResponse(Rating rating) {

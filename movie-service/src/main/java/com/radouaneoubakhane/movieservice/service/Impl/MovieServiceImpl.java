@@ -36,7 +36,7 @@ public class MovieServiceImpl implements MovieService {
     private final KafkaTemplate<String, NewMovieAddedEvent> kafkaTemplate;
 
 
-    public Page<MovieResponse> getAllMovies(Pageable pageable) {
+    public Page<MovieResponse> getMovies(Pageable pageable) {
         log.info("Fetching all movies");
 
         Page<Movie> movies = movieRepository.findAll(pageable);

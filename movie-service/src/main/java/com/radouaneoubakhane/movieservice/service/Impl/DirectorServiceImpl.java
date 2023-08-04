@@ -15,6 +15,8 @@ import com.radouaneoubakhane.movieservice.service.MovieService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,12 +30,23 @@ public class DirectorServiceImpl implements DirectorService {
     private final DirectorRepository directorRepository;
     private final MovieService movieService;
 
+
+
     public List<DirectorResponse> getDirectors() {
         log.info("Fetching all directors");
 
         List<Director> directors = directorRepository.findAll();
 
         return directors.stream().map(this::mapDirectorToDirectorResponse).toList();
+    }
+
+    @Override
+    public Page<DirectorResponse> getDirectors(Pageable pageable) {
+        log.info("Fetching all directors");
+
+        Page<Director> directors = directorRepository.findAll(pageable);
+
+        return directors.map(this::mapDirectorToDirectorResponse);
     }
 
     private DirectorResponse mapDirectorToDirectorResponse(Director director) {

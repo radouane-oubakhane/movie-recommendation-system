@@ -27,19 +27,21 @@ public class MovieController {
     // ==========================================================================
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<MovieResponse> getMovies(@RequestParam(defaultValue = "0") Integer pageNo,
-                                         @RequestParam(defaultValue = "10") Integer pageSize,
-                                         @RequestParam(defaultValue = "title,asc") String[] sort) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, getSortOrder(sort));
-        return movieService.getAllMovies(pageable);
+    public Page<MovieResponse> getMoviesWithPaginationAndSorting(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "title,asc") String[] sortBy)
+    {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, getSortOrder(sortBy));
+        return movieService.getMovies(pageable);
     }
 
 
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<MovieResponse> getMovies() {
-//        return movieService.getMovies();
-//    }
+    @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
+    public List<MovieResponse> getMovies() {
+        return movieService.getMovies();
+    }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -114,6 +116,9 @@ public class MovieController {
             String sortBy = sort[0];
             String sortOrder = sort[1].equalsIgnoreCase("desc") ? "desc" : "asc";
             return Sort.by(Sort.Direction.fromString(sortOrder), sortBy);
+        } else if (sort.length == 1) {
+            String sortBy = sort[0];
+            return Sort.by(Sort.Direction.ASC, sortBy);
         }
         return Sort.unsorted();
     }

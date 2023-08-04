@@ -17,6 +17,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +32,8 @@ public class ActorServiceImpl implements ActorService {
     private final ActorRepository actorRepository;
     private final MovieService movieService;
 
+
+
     public List<ActorResponse> getActors() {
         log.info("Fetching all actors");
 
@@ -37,6 +41,16 @@ public class ActorServiceImpl implements ActorService {
 
         return actors.stream().map(this::mapActorToActorResponse).toList();
     }
+
+    @Override
+    public Page<ActorResponse> getActors(Pageable pageable) {
+        log.info("Fetching all actors");
+
+        Page<Actor> actors = actorRepository.findAll(pageable);
+
+        return actors.map(this::mapActorToActorResponse);
+    }
+
 
     private ActorResponse mapActorToActorResponse(Actor actor) {
         return ActorResponse.builder()

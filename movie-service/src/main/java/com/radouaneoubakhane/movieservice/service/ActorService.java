@@ -3,11 +3,14 @@ package com.radouaneoubakhane.movieservice.service;
 import com.radouaneoubakhane.movieservice.dto.actor.ActorRequest;
 import com.radouaneoubakhane.movieservice.dto.actor.ActorResponse;
 import com.radouaneoubakhane.movieservice.dto.actor.MovieResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface ActorService {
     List<ActorResponse> getActors();
+    Page<ActorResponse> getActors(Pageable pageable);
 
     ActorResponse getActor(Long id);
 
@@ -26,5 +29,6 @@ public interface ActorService {
     void removeMovieFromActor(Long actorId, Long movieId);
 
     List<ActorResponse> getActorsByIds(List<Long> id);
+
 }
 
