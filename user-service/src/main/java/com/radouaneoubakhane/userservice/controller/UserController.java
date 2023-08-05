@@ -7,9 +7,7 @@ public interface UserController {
 
     UserResponse getMyUser();
 
-
     UserResponse updateMyUser(UserRequest userRequest);
-
 
     UserResponse createMyUser(UserRequest userRequest);
 

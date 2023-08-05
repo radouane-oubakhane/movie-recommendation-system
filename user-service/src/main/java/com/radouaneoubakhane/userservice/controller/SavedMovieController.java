@@ -8,12 +8,9 @@ public interface SavedMovieController {
 
     List<SavedMovieResponse> getMySavedMovies();
 
-
     SavedMovieResponse getMySavedMovie(Long id);
 
-
     void addMySavedMovie(Long id);
-
 
     void deleteMySavedMovie(Long id);
 }

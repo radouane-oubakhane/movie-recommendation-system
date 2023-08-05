@@ -10,7 +10,6 @@ public interface FavoriteMovieController {
 
     FavoriteMovieResponse getMyFavoriteMovie(Long id);
 
-
     void addMyFavoriteMovie(Long id);
 
     void deleteMyFavoriteMovie(Long id);

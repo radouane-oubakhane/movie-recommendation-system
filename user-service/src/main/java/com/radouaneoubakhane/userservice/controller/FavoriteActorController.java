@@ -8,12 +8,9 @@ public interface FavoriteActorController {
 
     List<FavoriteActorResponse> getMyFavoriteActors();
 
-
     FavoriteActorResponse getMyFavoriteActor(Long id);
 
-
     void addMyFavoriteActor(Long id);
-
 
     void deleteMyFavoriteActor(Long id);
 }

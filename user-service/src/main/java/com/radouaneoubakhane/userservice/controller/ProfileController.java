@@ -14,7 +14,6 @@ public interface ProfileController {
 
     ProfileResponse createMyProfile(ProfileRequest profileRequest);
 
-
     void deleteMyProfile();
 
     List<ProfileResponse> searchProfiles(String name);

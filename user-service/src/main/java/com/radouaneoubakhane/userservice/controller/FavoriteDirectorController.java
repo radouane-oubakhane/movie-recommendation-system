@@ -7,7 +7,6 @@ import java.util.List;
 public interface FavoriteDirectorController {
     List<FavoriteDirectorResponse> getMyFavoriteDirectors();
 
-
     FavoriteDirectorResponse getMyFavoriteDirector(Long id);
 
     void addMyFavoriteDirector(Long id);

@@ -7,12 +7,9 @@ import java.util.List;
 public interface WatchlistMovieController {
     List<WatchlistMovieResponse> getAllWatchlistMovies();
 
-
     WatchlistMovieResponse getMyWatchlistMovie(Long id);
 
-
     void addWatchlistMovie(Long id);
-
 
     void deleteWatchlistMovie(Long id);
 }

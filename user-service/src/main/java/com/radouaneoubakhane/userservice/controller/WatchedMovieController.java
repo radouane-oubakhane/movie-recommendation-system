@@ -8,12 +8,9 @@ public interface WatchedMovieController {
 
     List<WatchedMovieResponse> getAllWatchedMovies();
 
-
     WatchedMovieResponse getMyWatchedMovie(Long id);
 
-
     void addWatchedMovie(Long id);
-
 
     void deleteWatchedMovie(Long id);
 }
