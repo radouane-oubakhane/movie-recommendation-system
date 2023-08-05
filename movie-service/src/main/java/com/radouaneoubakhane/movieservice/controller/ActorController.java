@@ -1,117 +1,35 @@
 package com.radouaneoubakhane.movieservice.controller;
 
-
 import com.radouaneoubakhane.movieservice.dto.actor.ActorRequest;
 import com.radouaneoubakhane.movieservice.dto.actor.ActorResponse;
 import com.radouaneoubakhane.movieservice.dto.actor.MovieResponse;
-import com.radouaneoubakhane.movieservice.service.ActorService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/v1/actors")
-public class ActorController {
-
-    private final ActorService actorService;
-
+public interface ActorController {
     // CRUD operations
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public Page<ActorResponse> getActorsWithPaginationAndSorting(
-            @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "firstName, asc")String[] sortBy)
-    {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, getSortOrder(sortBy));
-        return actorService.getActors(pageable);
-    }
+    Page<ActorResponse> getActorsWithPaginationAndSorting(Integer pageNo, Integer pageSize, String[] sortBy);
 
-    @GetMapping("/all")
-    @ResponseStatus(HttpStatus.OK)
-    public List<ActorResponse> getActors() {
-        return actorService.getActors();
-    }
+    List<ActorResponse> getActors();
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ActorResponse getActor(@PathVariable Long id) {
-        return actorService.getActor(id);
-    }
+    ActorResponse getActor(Long id);
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ActorResponse createActor(@RequestBody ActorRequest actorRequest) {
-        return actorService.createActor(actorRequest);
-    }
+    ActorResponse createActor(ActorRequest actorRequest);
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ActorResponse updateActor(@PathVariable Long id, @RequestBody ActorRequest actorRequest) {
-        return actorService.updateActor(id, actorRequest);
-    }
+    ActorResponse updateActor(Long id, ActorRequest actorRequest);
 
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteActor(@PathVariable Long id) {
-        actorService.deleteActor(id);
-    }
+    void deleteActor(Long id);
 
     // Other operations
-    @GetMapping("/search")
-    @ResponseStatus(HttpStatus.OK)
-    public List<ActorResponse> searchActors(@RequestParam String name) {
-        return actorService.searchActors(name);
-    }
+    List<ActorResponse> searchActors(String name);
 
-    @GetMapping("/{actorId}/movies")
-    @ResponseStatus(HttpStatus.OK)
-    public List<MovieResponse> getMoviesByActor(@PathVariable Long actorId) {
-        return actorService.getActorMovies(actorId);
-    }
+    List<MovieResponse> getMoviesByActor(Long actorId);
 
-    @PutMapping("/{actorId}/movies/{movieId}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void addMovieToActor(@PathVariable Long actorId, @PathVariable Long movieId) {
-        actorService.addMovieToActor(actorId, movieId);
-    }
-
-    @DeleteMapping("/{actorId}/movies/{movieId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeMovieFromActor(@PathVariable Long actorId, @PathVariable Long movieId) {
-        actorService.removeMovieFromActor(actorId, movieId);
-    }
+    void addMovieToActor(Long actorId,Long movieId);
 
 
-    // Endpoints for the user-service
+    void removeMovieFromActor(Long actorId, Long movieId);
 
-    @GetMapping("/ids")
-    @ResponseStatus(HttpStatus.OK)
-    public List<ActorResponse> getActorsByIds(@RequestParam List<Long> id) {
-        return actorService.getActorsByIds(id);
-    }
-
-    // Helper methods for sorting and pagination ================================
-    // ==========================================================================
-    private Sort getSortOrder(String[] sort) {
-        if (sort.length > 1) {
-            String sortBy = sort[0];
-            String sortOrder = sort[1].equalsIgnoreCase("desc") ? "desc" : "asc";
-            return Sort.by(Sort.Direction.fromString(sortOrder), sortBy);
-        } else if (sort.length == 1) {
-            String sortBy = sort[0];
-            return Sort.by(Sort.Direction.ASC, sortBy);
-        }
-        return Sort.unsorted();
-    }
+    List<ActorResponse> getActorsByIds(List<Long> id);
 }
-
-

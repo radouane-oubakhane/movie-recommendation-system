@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.movieservice.service.Impl;
+package com.radouaneoubakhane.movieservice.service.impl;
 
 
 import com.radouaneoubakhane.movieservice.dto.rating.MovieResponse;

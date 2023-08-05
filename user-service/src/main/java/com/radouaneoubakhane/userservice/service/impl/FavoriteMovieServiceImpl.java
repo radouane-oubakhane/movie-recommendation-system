@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.userservice.service.Impl;
+package com.radouaneoubakhane.userservice.service.impl;
 
 
 import com.radouaneoubakhane.userservice.dto.movie.FavoriteMovieResponse;
