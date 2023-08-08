@@ -3,8 +3,8 @@ package com.radouaneoubakhane.userservice.service.impl;
 
 import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.userservice.dto.movie.SavedMovieResponse;
-import com.radouaneoubakhane.userservice.entity.SavedMovie;
-import com.radouaneoubakhane.userservice.entity.User;
+import com.radouaneoubakhane.userservice.domain.SavedMovie;
+import com.radouaneoubakhane.userservice.domain.User;
 import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
 import com.radouaneoubakhane.userservice.repository.SavedMovieRepository;
 import com.radouaneoubakhane.userservice.service.SavedMovieService;
@@ -74,7 +74,7 @@ public class SavedMovieServiceImpl implements SavedMovieService {
                 .orElseThrow(() -> new MovieNotFoundException("Saved movie not found"));
 
         if (savedMovie.getUser().getId() != 1L) {
-            throw new RuntimeException("Saved movie not found");
+            throw new IllegalArgumentException("Saved movie not found");
         }
 
         // Call the movie-service to get the saved movie
@@ -100,7 +100,7 @@ public class SavedMovieServiceImpl implements SavedMovieService {
         log.info("Adding my saved movie with id {}", id);
 
         if (savedMovieRepository.existsByMovieIdAndUserId(id, 1L)) {
-            throw new RuntimeException("Movie already saved");
+            throw new IllegalArgumentException("Movie already saved");
         }
 
         // Call the movie-service to validate if the movie exists
@@ -139,7 +139,7 @@ public class SavedMovieServiceImpl implements SavedMovieService {
                 .orElseThrow(() -> new MovieNotFoundException("Saved movie not found"));
 
         if (savedMovie.getUser().getId() != 1L) {
-            throw new RuntimeException("Saved movie not found");
+            throw new IllegalArgumentException("Saved movie not found");
         }
 
         savedMovieRepository.delete(savedMovie);

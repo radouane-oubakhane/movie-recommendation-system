@@ -1,7 +1,11 @@
 package com.radouaneoubakhane.userservice.exception;
 
 
+import com.radouaneoubakhane.userservice.exception.actor.ActorNotFoundException;
+import com.radouaneoubakhane.userservice.exception.director.DirectorNotFoundException;
+import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
 import com.radouaneoubakhane.userservice.exception.profile.ProfileNotFoundException;
+import com.radouaneoubakhane.userservice.exception.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,7 +18,11 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {
+            ActorNotFoundException.class,
+            DirectorNotFoundException.class,
+            MovieNotFoundException.class,
             ProfileNotFoundException.class,
+            UserNotFoundException.class
     })
     public ResponseEntity<ErrorDetails> handleNotFoundException(Exception ex, WebRequest request) {
         ErrorDetails errorDetails = ErrorDetails.builder()

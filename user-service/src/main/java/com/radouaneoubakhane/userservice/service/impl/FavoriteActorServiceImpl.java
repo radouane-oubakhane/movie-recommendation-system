@@ -2,8 +2,8 @@ package com.radouaneoubakhane.userservice.service.impl;
 
 import com.radouaneoubakhane.userservice.dto.actor.ActorResponse;
 import com.radouaneoubakhane.userservice.dto.actor.FavoriteActorResponse;
-import com.radouaneoubakhane.userservice.entity.FavoriteActor;
-import com.radouaneoubakhane.userservice.entity.User;
+import com.radouaneoubakhane.userservice.domain.FavoriteActor;
+import com.radouaneoubakhane.userservice.domain.User;
 import com.radouaneoubakhane.userservice.exception.actor.ActorNotFoundException;
 import com.radouaneoubakhane.userservice.repository.FavoriteActorRepository;
 import com.radouaneoubakhane.userservice.service.FavoriteActorService;
@@ -73,7 +73,7 @@ public class FavoriteActorServiceImpl implements FavoriteActorService {
                 .orElseThrow(() -> new ActorNotFoundException("Favorite actor not found"));
 
         if (favoriteActor.getUser().getId() != 1L) {
-            throw new RuntimeException("Favorite actor not found");
+            throw new IllegalArgumentException("Favorite actor not found");
         }
 
         // Call the movie-service to get the favorite actor by id and return it
@@ -100,7 +100,7 @@ public class FavoriteActorServiceImpl implements FavoriteActorService {
         log.info("Adding my favorite actor with id {}", id);
 
         if (favoriteActorRepository.existsByUserIdAndActorId(1L, id)) {
-            throw new RuntimeException("Favorite actor already exists");
+            throw new IllegalArgumentException("Favorite actor already exists");
         }
 
         // Call the movie-service to validate the actor id if it exists
@@ -145,3 +145,4 @@ public class FavoriteActorServiceImpl implements FavoriteActorService {
         favoriteActorRepository.delete(favoriteActor);
     }
 }
+

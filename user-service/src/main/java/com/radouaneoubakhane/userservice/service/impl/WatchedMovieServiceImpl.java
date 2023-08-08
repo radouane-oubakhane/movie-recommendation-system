@@ -2,8 +2,8 @@ package com.radouaneoubakhane.userservice.service.impl;
 
 import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.userservice.dto.movie.WatchedMovieResponse;
-import com.radouaneoubakhane.userservice.entity.User;
-import com.radouaneoubakhane.userservice.entity.WatchedMovie;
+import com.radouaneoubakhane.userservice.domain.User;
+import com.radouaneoubakhane.userservice.domain.WatchedMovie;
 import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
 import com.radouaneoubakhane.userservice.repository.WatchedMovieRepository;
 import com.radouaneoubakhane.userservice.service.WatchedMovieService;
@@ -100,7 +100,7 @@ public class WatchedMovieServiceImpl implements WatchedMovieService {
         log.info("Adding my watched movie with id {}", id);
 
         if (watchedMovieRepository.existsByMovieIdAndUserId(id, 1L)) {
-            throw new RuntimeException("Watched movie already exists");
+            throw new IllegalArgumentException("Watched movie already exists");
         }
 
         // Call the movie-service to validate the movie if it exists
@@ -139,7 +139,7 @@ public class WatchedMovieServiceImpl implements WatchedMovieService {
                 .orElseThrow(() -> new MovieNotFoundException("Watched movie not found"));
 
         if (watchedMovie.getUser().getId() != 1L) {
-            throw new RuntimeException("Watched movie not found");
+            throw new IllegalArgumentException("Watched movie not found");
         }
 
         watchedMovieRepository.delete(watchedMovie);

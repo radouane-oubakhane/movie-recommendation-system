@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.userservice.repository;
 
-import com.radouaneoubakhane.userservice.entity.Profile;
+import com.radouaneoubakhane.userservice.domain.Profile;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

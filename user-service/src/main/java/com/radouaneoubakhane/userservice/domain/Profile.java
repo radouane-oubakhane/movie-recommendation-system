@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.movieservice.entity;
+package com.radouaneoubakhane.userservice.domain;
 
 
 import jakarta.persistence.*;
@@ -8,26 +8,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
-@Table(name = "director")
+@Table(name = "profile")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Director {
+public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
-    private String picture;
+    private String profilePicture;
     private LocalDate birthDate;
     private String birthPlace;
-    private String biography;
+    private String bio;
+    private String preferences;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "director_id")
-    private List<Movie> movies;
 }

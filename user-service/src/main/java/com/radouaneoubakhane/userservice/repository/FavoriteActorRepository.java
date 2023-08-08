@@ -1,7 +1,7 @@
 package com.radouaneoubakhane.userservice.repository;
 
 
-import com.radouaneoubakhane.userservice.entity.FavoriteActor;
+import com.radouaneoubakhane.userservice.domain.FavoriteActor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

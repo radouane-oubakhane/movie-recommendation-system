@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.notificationservice.entity;
+package com.radouaneoubakhane.notificationservice.domain;
 
 
 import jakarta.persistence.*;

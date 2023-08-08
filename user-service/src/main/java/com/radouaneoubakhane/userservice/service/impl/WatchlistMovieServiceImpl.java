@@ -3,8 +3,8 @@ package com.radouaneoubakhane.userservice.service.impl;
 
 import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.userservice.dto.movie.WatchlistMovieResponse;
-import com.radouaneoubakhane.userservice.entity.User;
-import com.radouaneoubakhane.userservice.entity.WatchlistMovie;
+import com.radouaneoubakhane.userservice.domain.User;
+import com.radouaneoubakhane.userservice.domain.WatchlistMovie;
 import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
 import com.radouaneoubakhane.userservice.repository.WatchlistMovieRepository;
 import com.radouaneoubakhane.userservice.service.WatchlistMovieService;
@@ -75,7 +75,7 @@ public class WatchlistMovieServiceImpl implements WatchlistMovieService {
                 .orElseThrow(() -> new MovieNotFoundException("Watchlist movie not found"));
 
         if (watchlistMovie.getUser().getId() != 1L) {
-            throw new RuntimeException("Watchlist movie not found");
+            throw new IllegalArgumentException("Watchlist movie not found");
         }
 
         // Call the movie-service to get the watchlist movie
@@ -101,7 +101,7 @@ public class WatchlistMovieServiceImpl implements WatchlistMovieService {
         log.info("Adding my watchlist movie with id {}", id);
 
         if (watchlistMovieRepository.existsById(id)) {
-            throw new RuntimeException("Watchlist movie already exists");
+            throw new IllegalArgumentException("Watchlist movie already exists");
         }
 
         // Call the movie-service to validate if it exists
@@ -118,7 +118,7 @@ public class WatchlistMovieServiceImpl implements WatchlistMovieService {
                 .block();
 
         if (result == null) {
-            throw new RuntimeException("Movie not found");
+            throw new MovieNotFoundException("Movie not found");
         }
 
         User user = User.builder()
@@ -141,7 +141,7 @@ public class WatchlistMovieServiceImpl implements WatchlistMovieService {
                 .orElseThrow(() -> new MovieNotFoundException("Watchlist movie not found"));
 
         if (watchlistMovie.getUser().getId() != 1L) {
-            throw new RuntimeException("Watchlist movie not found");
+            throw new IllegalArgumentException("Watchlist movie not found");
         }
 
         watchlistMovieRepository.delete(watchlistMovie);

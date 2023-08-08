@@ -3,8 +3,8 @@ package com.radouaneoubakhane.userservice.service.impl;
 
 import com.radouaneoubakhane.userservice.dto.director.DirectorResponse;
 import com.radouaneoubakhane.userservice.dto.director.FavoriteDirectorResponse;
-import com.radouaneoubakhane.userservice.entity.FavoriteDirector;
-import com.radouaneoubakhane.userservice.entity.User;
+import com.radouaneoubakhane.userservice.domain.FavoriteDirector;
+import com.radouaneoubakhane.userservice.domain.User;
 import com.radouaneoubakhane.userservice.exception.director.DirectorNotFoundException;
 import com.radouaneoubakhane.userservice.repository.FavoriteDirectorRepository;
 import com.radouaneoubakhane.userservice.service.FavoriteDirectorService;
@@ -102,7 +102,7 @@ public class FavoriteDirectorServiceImpl implements FavoriteDirectorService {
         log.info("addMyFavoriteDirector with id {}", id);
 
         if (favoriteDirectorRepository.existsByUserIdAndDirectorId(1L, id)) {
-            throw new RuntimeException("Favorite director already exists");
+            throw new IllegalArgumentException("Favorite director already exists");
         }
 
         // Call the movie-service to get the favorite director

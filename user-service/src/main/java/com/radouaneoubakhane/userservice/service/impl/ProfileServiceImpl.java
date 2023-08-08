@@ -4,8 +4,8 @@ package com.radouaneoubakhane.userservice.service.impl;
 import com.radouaneoubakhane.userservice.dto.profile.ProfileRequest;
 import com.radouaneoubakhane.userservice.dto.profile.ProfileResponse;
 import com.radouaneoubakhane.userservice.dto.profile.UserResponse;
-import com.radouaneoubakhane.userservice.entity.Profile;
-import com.radouaneoubakhane.userservice.entity.User;
+import com.radouaneoubakhane.userservice.domain.Profile;
+import com.radouaneoubakhane.userservice.domain.User;
 import com.radouaneoubakhane.userservice.exception.profile.ProfileNotFoundException;
 import com.radouaneoubakhane.userservice.repository.ProfileRepository;
 import com.radouaneoubakhane.userservice.service.ProfileService;
@@ -86,7 +86,7 @@ public class ProfileServiceImpl implements ProfileService {
         log.info("Creating my profile");
 
         if (profileRepository.findByUserId(1L).isPresent()) {
-            throw new IllegalStateException("Profile already exists");
+            throw new IllegalArgumentException("Profile already exists");
         }
 
         Profile profile = Profile.builder()
@@ -144,7 +144,7 @@ public class ProfileServiceImpl implements ProfileService {
         log.info("Creating profile");
 
         if (profileRepository.findByUserId(1L).isPresent()) {
-            throw new IllegalStateException("Profile already exists");
+            throw new IllegalArgumentException("Profile already exists");
         }
 
         User user = User.builder().id(1L).build();

@@ -3,8 +3,8 @@ package com.radouaneoubakhane.userservice.service.impl;
 
 import com.radouaneoubakhane.userservice.dto.movie.FavoriteMovieResponse;
 import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
-import com.radouaneoubakhane.userservice.entity.FavoriteMovie;
-import com.radouaneoubakhane.userservice.entity.User;
+import com.radouaneoubakhane.userservice.domain.FavoriteMovie;
+import com.radouaneoubakhane.userservice.domain.User;
 import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
 import com.radouaneoubakhane.userservice.repository.FavoriteMovieRepository;
 import com.radouaneoubakhane.userservice.service.FavoriteMovieService;
@@ -75,7 +75,7 @@ public class FavoriteMovieServiceImpl implements FavoriteMovieService {
                 .orElseThrow(() -> new MovieNotFoundException("Favorite movie not found"));
 
         if (favoriteMovie.getUser().getId() != 1L) {
-            throw new RuntimeException("Favorite movie not found");
+            throw new IllegalArgumentException("Favorite movie not found");
         }
 
         // Call the movie-service to get the favorite movie
@@ -101,7 +101,7 @@ public class FavoriteMovieServiceImpl implements FavoriteMovieService {
         log.info("addMyFavoriteMovie with id {}", id);
 
         if (favoriteMovieRepository.existsByUserIdAndMovieId(1L, id)) {
-            throw new RuntimeException("Favorite movie already exists");
+            throw new IllegalArgumentException("Favorite movie already exists");
         }
 
         // Call the movie-service to validate if the movie exists
@@ -118,7 +118,7 @@ public class FavoriteMovieServiceImpl implements FavoriteMovieService {
                 .block();
 
         if (result == null) {
-            throw new RuntimeException("Movie not found");
+            throw new MovieNotFoundException("Movie not found");
         }
 
         User user = User.builder()
@@ -141,7 +141,7 @@ public class FavoriteMovieServiceImpl implements FavoriteMovieService {
 
 
         if (favoriteMovie.getUser().getId() != 1L) {
-                throw new RuntimeException("Favorite movie not found");
+                throw new IllegalArgumentException("Favorite movie not found");
         }
 
         favoriteMovieRepository.delete(favoriteMovie);

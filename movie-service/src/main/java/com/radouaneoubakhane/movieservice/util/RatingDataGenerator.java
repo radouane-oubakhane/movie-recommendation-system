@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.movieservice.util;
 
-import com.radouaneoubakhane.movieservice.entity.Rating;
+import com.radouaneoubakhane.movieservice.domain.Rating;
 
 import java.util.List;
 

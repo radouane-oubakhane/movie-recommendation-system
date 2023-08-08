@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.userservice.entity;
+package com.radouaneoubakhane.userservice.domain;
 
 
 import jakarta.persistence.*;

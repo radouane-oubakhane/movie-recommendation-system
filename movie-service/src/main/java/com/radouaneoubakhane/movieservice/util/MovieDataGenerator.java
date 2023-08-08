@@ -1,7 +1,7 @@
 package com.radouaneoubakhane.movieservice.util;
 
 import com.radouaneoubakhane.movieservice.enums.Genre;
-import com.radouaneoubakhane.movieservice.entity.Movie;
+import com.radouaneoubakhane.movieservice.domain.Movie;
 
 import java.time.LocalDate;
 import java.util.List;

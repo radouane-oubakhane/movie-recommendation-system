@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.userservice.entity;
+package com.radouaneoubakhane.userservice.domain;
 
 
 import jakarta.persistence.*;
@@ -8,16 +8,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "favorite_directors")
+@Table(name = "favorite_actors")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FavoriteDirector {
+public class FavoriteActor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long directorId;
+    private Long actorId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

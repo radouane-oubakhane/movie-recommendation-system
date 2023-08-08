@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.userservice.util.DataGenerators;
 
-import com.radouaneoubakhane.userservice.entity.WatchedMovie;
+import com.radouaneoubakhane.userservice.domain.WatchedMovie;
 
 public class WatchedMoviesDataGenerator {
     public static WatchedMovie generateWatchedMovies() {
