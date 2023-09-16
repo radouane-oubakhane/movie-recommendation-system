@@ -1,8 +1,8 @@
 package com.radouaneoubakhane.userservice.service.impl;
 
 import com.radouaneoubakhane.userservice.dto.user.*;
-import com.radouaneoubakhane.userservice.domain.Profile;
-import com.radouaneoubakhane.userservice.domain.User;
+import com.radouaneoubakhane.userservice.model.Profile;
+import com.radouaneoubakhane.userservice.model.User;
 import com.radouaneoubakhane.userservice.exception.user.UserNotFoundException;
 import com.radouaneoubakhane.userservice.mapper.UserMapper;
 import com.radouaneoubakhane.userservice.repository.UserRepository;

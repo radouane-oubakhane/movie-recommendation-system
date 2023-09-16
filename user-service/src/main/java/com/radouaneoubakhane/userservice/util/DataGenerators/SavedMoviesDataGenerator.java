@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.userservice.util.DataGenerators;
 
-import com.radouaneoubakhane.userservice.domain.SavedMovie;
+import com.radouaneoubakhane.userservice.model.SavedMovie;
 
 public class SavedMoviesDataGenerator {
     public static SavedMovie generateSavedMovies() {

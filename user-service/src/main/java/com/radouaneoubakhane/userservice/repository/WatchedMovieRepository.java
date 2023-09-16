@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.userservice.repository;
 
-import com.radouaneoubakhane.userservice.domain.WatchedMovie;
+import com.radouaneoubakhane.userservice.model.WatchedMovie;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

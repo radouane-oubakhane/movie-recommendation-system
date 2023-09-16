@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.userservice.util.DataGenerators;
 
-import com.radouaneoubakhane.userservice.domain.WatchlistMovie;
+import com.radouaneoubakhane.userservice.model.WatchlistMovie;
 
 public class WatchlistDataGenerator {
     public static WatchlistMovie generateWatchlist() {

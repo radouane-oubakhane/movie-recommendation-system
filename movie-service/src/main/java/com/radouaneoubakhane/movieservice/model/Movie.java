@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.movieservice.domain;
+package com.radouaneoubakhane.movieservice.model;
 
 
 import com.radouaneoubakhane.movieservice.enums.Genre;

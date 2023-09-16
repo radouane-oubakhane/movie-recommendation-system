@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.userservice.util.DataGenerators;
 
-import com.radouaneoubakhane.userservice.domain.Profile;
+import com.radouaneoubakhane.userservice.model.Profile;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,5 @@
-package com.radouaneoubakhane.movieservice.domain;
+package com.radouaneoubakhane.userservice.model;
+
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,29 +8,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
-@Table(name = "actor")
+@Table(name = "profile")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Actor {
+public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
-    private String picture;
+    private String profilePicture;
     private LocalDate birthDate;
     private String birthPlace;
-    private String biography;
+    private String bio;
+    private String preferences;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "actor_movie",
-            joinColumns = @JoinColumn(name = "actor_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id")
-    )
-    private List<Movie> movies;
 }

@@ -1,5 +1,4 @@
-package com.radouaneoubakhane.movieservice.domain;
-
+package com.radouaneoubakhane.movieservice.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,12 +10,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "director")
+@Table(name = "actor")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Director {
+public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +26,10 @@ public class Director {
     private String birthPlace;
     private String biography;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "director_id")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "actor_movie",
+            joinColumns = @JoinColumn(name = "actor_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id")
+    )
     private List<Movie> movies;
 }

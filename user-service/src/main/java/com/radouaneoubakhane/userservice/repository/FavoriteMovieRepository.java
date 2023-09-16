@@ -1,7 +1,7 @@
 package com.radouaneoubakhane.userservice.repository;
 
 
-import com.radouaneoubakhane.userservice.domain.FavoriteMovie;
+import com.radouaneoubakhane.userservice.model.FavoriteMovie;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

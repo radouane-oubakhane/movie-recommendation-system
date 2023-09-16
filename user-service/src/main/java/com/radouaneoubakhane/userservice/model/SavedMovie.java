@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.userservice.domain;
+package com.radouaneoubakhane.userservice.model;
 
 
 import jakarta.persistence.*;
@@ -8,12 +8,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "favorite_movies")
+@Table(name = "saved_movies")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FavoriteMovie {
+public class SavedMovie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

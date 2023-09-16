@@ -2,8 +2,8 @@ package com.radouaneoubakhane.userservice.service.impl;
 
 import com.radouaneoubakhane.userservice.dto.actor.ActorResponse;
 import com.radouaneoubakhane.userservice.dto.actor.FavoriteActorResponse;
-import com.radouaneoubakhane.userservice.domain.FavoriteActor;
-import com.radouaneoubakhane.userservice.domain.User;
+import com.radouaneoubakhane.userservice.model.FavoriteActor;
+import com.radouaneoubakhane.userservice.model.User;
 import com.radouaneoubakhane.userservice.exception.actor.ActorNotFoundException;
 import com.radouaneoubakhane.userservice.repository.FavoriteActorRepository;
 import com.radouaneoubakhane.userservice.service.FavoriteActorService;

@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.movieservice.repository;
 
-import com.radouaneoubakhane.movieservice.domain.Movie;
+import com.radouaneoubakhane.movieservice.model.Movie;
 import com.radouaneoubakhane.movieservice.enums.Genre;
 import org.springframework.data.jpa.repository.JpaRepository;
 

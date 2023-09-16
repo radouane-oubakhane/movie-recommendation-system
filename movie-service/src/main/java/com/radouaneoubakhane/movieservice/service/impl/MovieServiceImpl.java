@@ -2,10 +2,10 @@ package com.radouaneoubakhane.movieservice.service.impl;
 
 
 import com.radouaneoubakhane.movieservice.dto.movie.*;
-import com.radouaneoubakhane.movieservice.domain.Actor;
-import com.radouaneoubakhane.movieservice.domain.Director;
-import com.radouaneoubakhane.movieservice.domain.Movie;
-import com.radouaneoubakhane.movieservice.domain.Rating;
+import com.radouaneoubakhane.movieservice.model.Actor;
+import com.radouaneoubakhane.movieservice.model.Director;
+import com.radouaneoubakhane.movieservice.model.Movie;
+import com.radouaneoubakhane.movieservice.model.Rating;
 import com.radouaneoubakhane.movieservice.enums.Genre;
 import com.radouaneoubakhane.movieservice.event.NewMovieAddedEvent;
 import com.radouaneoubakhane.movieservice.exception.Actor.ActorNotFoundException;

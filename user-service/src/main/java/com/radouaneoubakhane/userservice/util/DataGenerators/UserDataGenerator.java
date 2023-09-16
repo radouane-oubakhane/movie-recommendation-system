@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.userservice.util.DataGenerators;
 
-import com.radouaneoubakhane.userservice.domain.User;
+import com.radouaneoubakhane.userservice.model.User;
 
 public class UserDataGenerator {
     public static User generateUser() {

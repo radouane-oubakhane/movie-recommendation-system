@@ -3,8 +3,8 @@ package com.radouaneoubakhane.userservice.service.impl;
 
 import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.userservice.dto.movie.SavedMovieResponse;
-import com.radouaneoubakhane.userservice.domain.SavedMovie;
-import com.radouaneoubakhane.userservice.domain.User;
+import com.radouaneoubakhane.userservice.model.SavedMovie;
+import com.radouaneoubakhane.userservice.model.User;
 import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
 import com.radouaneoubakhane.userservice.repository.SavedMovieRepository;
 import com.radouaneoubakhane.userservice.service.SavedMovieService;

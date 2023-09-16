@@ -3,8 +3,8 @@ package com.radouaneoubakhane.userservice.service.impl;
 
 import com.radouaneoubakhane.userservice.dto.director.DirectorResponse;
 import com.radouaneoubakhane.userservice.dto.director.FavoriteDirectorResponse;
-import com.radouaneoubakhane.userservice.domain.FavoriteDirector;
-import com.radouaneoubakhane.userservice.domain.User;
+import com.radouaneoubakhane.userservice.model.FavoriteDirector;
+import com.radouaneoubakhane.userservice.model.User;
 import com.radouaneoubakhane.userservice.exception.director.DirectorNotFoundException;
 import com.radouaneoubakhane.userservice.repository.FavoriteDirectorRepository;
 import com.radouaneoubakhane.userservice.service.FavoriteDirectorService;

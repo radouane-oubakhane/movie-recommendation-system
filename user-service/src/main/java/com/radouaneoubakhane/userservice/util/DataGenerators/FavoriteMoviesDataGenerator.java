@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.userservice.util.DataGenerators;
 
-import com.radouaneoubakhane.userservice.domain.FavoriteMovie;
+import com.radouaneoubakhane.userservice.model.FavoriteMovie;
 
 public class FavoriteMoviesDataGenerator {
     public static FavoriteMovie generateFavoriteMovies() {

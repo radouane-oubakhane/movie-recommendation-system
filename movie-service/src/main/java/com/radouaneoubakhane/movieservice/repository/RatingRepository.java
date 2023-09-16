@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.movieservice.repository;
 
-import com.radouaneoubakhane.movieservice.domain.Rating;
+import com.radouaneoubakhane.movieservice.model.Rating;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

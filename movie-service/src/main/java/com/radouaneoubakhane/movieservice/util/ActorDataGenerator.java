@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.movieservice.util;
 
-import com.radouaneoubakhane.movieservice.domain.Actor;
+import com.radouaneoubakhane.movieservice.model.Actor;
 
 import java.time.LocalDate;
 import java.util.List;

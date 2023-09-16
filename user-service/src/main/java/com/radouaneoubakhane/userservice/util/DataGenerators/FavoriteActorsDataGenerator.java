@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.userservice.util.DataGenerators;
 
-import com.radouaneoubakhane.userservice.domain.FavoriteActor;
+import com.radouaneoubakhane.userservice.model.FavoriteActor;
 
 public class FavoriteActorsDataGenerator {
     public static FavoriteActor getInstance() {

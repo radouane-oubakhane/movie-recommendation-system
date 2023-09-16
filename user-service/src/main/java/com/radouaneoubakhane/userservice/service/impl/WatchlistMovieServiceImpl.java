@@ -3,8 +3,8 @@ package com.radouaneoubakhane.userservice.service.impl;
 
 import com.radouaneoubakhane.userservice.dto.movie.MovieResponse;
 import com.radouaneoubakhane.userservice.dto.movie.WatchlistMovieResponse;
-import com.radouaneoubakhane.userservice.domain.User;
-import com.radouaneoubakhane.userservice.domain.WatchlistMovie;
+import com.radouaneoubakhane.userservice.model.User;
+import com.radouaneoubakhane.userservice.model.WatchlistMovie;
 import com.radouaneoubakhane.userservice.exception.movie.MovieNotFoundException;
 import com.radouaneoubakhane.userservice.repository.WatchlistMovieRepository;
 import com.radouaneoubakhane.userservice.service.WatchlistMovieService;

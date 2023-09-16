@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.movieservice.repository;
 
-import com.radouaneoubakhane.movieservice.domain.Director;
+import com.radouaneoubakhane.movieservice.model.Director;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
