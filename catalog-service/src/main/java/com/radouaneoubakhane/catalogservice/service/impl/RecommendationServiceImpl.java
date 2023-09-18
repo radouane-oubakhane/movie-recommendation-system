@@ -42,6 +42,8 @@ public class RecommendationServiceImpl implements RecommendationService {
                     payload
             );
 
+            log.info("Event sent to generate recommendations for all users topic successfully");
+
 
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

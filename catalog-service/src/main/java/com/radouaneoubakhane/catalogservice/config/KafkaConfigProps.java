@@ -19,4 +19,5 @@ import java.util.Map;
 public class KafkaConfigProps {
     private Map<String, String> topics;
     private String bootstrapServers;
+    private String groupId;
 }
