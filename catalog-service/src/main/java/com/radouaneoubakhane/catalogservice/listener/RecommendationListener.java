@@ -4,7 +4,6 @@ package com.radouaneoubakhane.catalogservice.listener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.radouaneoubakhane.catalogservice.config.KafkaConfigProps;
 import com.radouaneoubakhane.catalogservice.exception.InvalidMessageException;
 import com.radouaneoubakhane.catalogservice.model.Recommendation;
 import com.radouaneoubakhane.catalogservice.repository.RecommendationRepository;
@@ -58,8 +57,8 @@ public class RecommendationListener {
 
     private Recommendation RecommendationFromPayload(Map<String, Object> payload) {
         return Recommendation.builder()
-                .userId( (Integer) payload.get("user_id"))
-                .movieId( (Integer) payload.get("movie_id"))
+                .userId( ((Integer) payload.get("user_id")).longValue())
+                .movieId( ((Integer) payload.get("movie_id")).longValue())
                 .rating((Double) payload.get("rating"))
                 .timestamp((Integer) payload.get("timestamp"))
                 .build();

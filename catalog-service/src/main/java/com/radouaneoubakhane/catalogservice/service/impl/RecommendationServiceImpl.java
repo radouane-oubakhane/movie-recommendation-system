@@ -1,16 +1,16 @@
 package com.radouaneoubakhane.catalogservice.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.radouaneoubakhane.catalogservice.config.KafkaConfigProps;
-import com.radouaneoubakhane.catalogservice.event.GenerateRecommendationsForAllUsersEvent;
+import com.radouaneoubakhane.catalogservice.dto.movie.MovieResponse;
+import com.radouaneoubakhane.catalogservice.dto.movie.MovieRecommendationResponse;
+import com.radouaneoubakhane.catalogservice.model.Recommendation;
+import com.radouaneoubakhane.catalogservice.repository.RecommendationRepository;
 import com.radouaneoubakhane.catalogservice.service.RecommendationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -18,36 +18,55 @@ import java.time.LocalDateTime;
 @Slf4j
 public class RecommendationServiceImpl implements RecommendationService {
 
-    private final ObjectMapper objectMapper;
-    private final KafkaTemplate<String, String> kafkaTemplate;
-    private final KafkaConfigProps kafkaConfigProps;
+    private final RecommendationRepository recommendationRepository;
+    private final WebClient.Builder webClientBuilder;
 
 
     @Override
-    public void generateRecommendationsForAllUsers() {
+    public List<MovieRecommendationResponse> getRecommendedMovies(Long userId) {
+        log.info("Fetching recommended movies for user {}", userId);
 
-        log.info("Sending event to generate recommendations for all users");
+        List<Recommendation> recommendations = recommendationRepository.findByUserId(userId);
 
-
-        final GenerateRecommendationsForAllUsersEvent event = GenerateRecommendationsForAllUsersEvent.builder()
-                .dateTime(LocalDateTime.now())
-                .build();
-
-        try {
-            final String payload = objectMapper.writeValueAsString(event);
-
-            kafkaTemplate.send(
-                    kafkaConfigProps.getTopics().get(
-                            "generateRecommendationsForAllUsersTopic"),
-                    payload
-            );
-
-            log.info("Event sent to generate recommendations for all users topic successfully");
-
-
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+        if (recommendations.isEmpty()) {
+            log.info("No recommended movies found for user {}", userId);
+            return List.of();
         }
+
+        // Call the movie-service to get the favorite movies
+        // http://movie-service/api/v1/movie/ids?id=id
+        List<MovieResponse> result = webClientBuilder.build()
+                .get()
+                .uri(
+                        "lb://movie-service/api/v1/movies/ids",
+                        uriBuilder -> uriBuilder
+                                .queryParam("id", recommendations.stream()
+                                        .map(Recommendation::getMovieId)
+                                        .toList())
+                                .build()
+                )
+                .retrieve()
+                .bodyToFlux(MovieResponse.class)
+                .collectList()
+                .block();
+
+        return mapToRecommendedMovieResponse(recommendations, result);
+    }
+
+    private List<MovieRecommendationResponse> mapToRecommendedMovieResponse(List<Recommendation> recommendations, List<MovieResponse> result) {
+        return recommendations.stream()
+                .map(recommendation -> {
+                    MovieResponse movieResponse = result.stream()
+                            .filter(movie -> movie.getId().equals( recommendation.getMovieId()))
+                            .findFirst()
+                            .orElse(null);
+
+                    return MovieRecommendationResponse.builder()
+                            .id(recommendation.getId())
+                            .movie(movieResponse)
+                            .build();
+                })
+                .toList();
     }
 }
 

@@ -16,8 +16,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Recommendation {
     @Id
     private String id;
-    private int userId;
-    private int movieId;
+    private Long userId;
+    private Long movieId;
     private double rating;
     private int timestamp;
 
