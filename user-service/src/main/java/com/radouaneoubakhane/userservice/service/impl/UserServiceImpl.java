@@ -1,10 +1,11 @@
 package com.radouaneoubakhane.userservice.service.impl;
 
 import com.radouaneoubakhane.userservice.dto.user.*;
+import com.radouaneoubakhane.userservice.exception.user.UserNotFoundException;
+import com.radouaneoubakhane.userservice.mapper.profile.ProfileResponseMapper;
+import com.radouaneoubakhane.userservice.mapper.user.UserProfileResponseMapper;
 import com.radouaneoubakhane.userservice.model.Profile;
 import com.radouaneoubakhane.userservice.model.User;
-import com.radouaneoubakhane.userservice.exception.user.UserNotFoundException;
-import com.radouaneoubakhane.userservice.mapper.UserMapper;
 import com.radouaneoubakhane.userservice.repository.UserRepository;
 import com.radouaneoubakhane.userservice.service.UserService;
 import jakarta.transaction.Transactional;
@@ -23,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ProfileServiceImpl profileService;
+    private final ProfileResponseMapper profileResponseMapper;
+    private final UserProfileResponseMapper userProfileResponseMapper;
 
 
 
@@ -208,9 +211,9 @@ public class UserServiceImpl implements UserService {
         );
 
 
-        return UserMapper.map(
+        return profileResponseMapper.apply(
                 profileService.createProfile(
-                        UserMapper.map(profileRequest)
+                        userProfileResponseMapper.apply(profileRequest)
                 )
         );
     }
