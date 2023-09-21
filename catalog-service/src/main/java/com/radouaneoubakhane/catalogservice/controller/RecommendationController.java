@@ -1,6 +1,6 @@
 package com.radouaneoubakhane.catalogservice.controller;
 
-import com.radouaneoubakhane.catalogservice.dto.movie.MovieRecommendationResponse;
+import com.radouaneoubakhane.catalogservice.dto.MovieRecommendationResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

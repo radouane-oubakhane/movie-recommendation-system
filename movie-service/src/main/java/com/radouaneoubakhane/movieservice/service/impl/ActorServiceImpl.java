@@ -9,7 +9,7 @@ import com.radouaneoubakhane.movieservice.model.Director;
 import com.radouaneoubakhane.movieservice.model.Movie;
 import com.radouaneoubakhane.movieservice.exception.Actor.ActorNotFoundException;
 import com.radouaneoubakhane.movieservice.exception.Movie.MovieNotFoundException;
-import com.radouaneoubakhane.movieservice.mapper.ActorMapper;
+import com.radouaneoubakhane.movieservice.mapper.actor.ActorMovieResponseMapper;
 import com.radouaneoubakhane.movieservice.repository.ActorRepository;
 import com.radouaneoubakhane.movieservice.service.ActorService;
 import com.radouaneoubakhane.movieservice.service.MovieService;
@@ -31,6 +31,7 @@ public class ActorServiceImpl implements ActorService {
 
     private final ActorRepository actorRepository;
     private final MovieService movieService;
+    private final ActorMovieResponseMapper movieResponseMapper;
 
 
 
@@ -167,7 +168,7 @@ public class ActorServiceImpl implements ActorService {
                 () -> new ActorNotFoundException("Actor not found")
         );
 
-        MovieResponse movieResponse = ActorMapper.map(
+        MovieResponse movieResponse = movieResponseMapper.apply(
                 movieService.getMovie(movieId)
         );
 
@@ -203,7 +204,7 @@ public class ActorServiceImpl implements ActorService {
                 () -> new ActorNotFoundException("Actor not found")
         );
 
-        MovieResponse movieResponse = ActorMapper.map(
+        MovieResponse movieResponse = movieResponseMapper.apply(
                 movieService.getMovie(movieId)
         );
 

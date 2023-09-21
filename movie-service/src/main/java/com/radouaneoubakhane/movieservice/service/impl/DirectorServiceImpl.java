@@ -4,11 +4,11 @@ package com.radouaneoubakhane.movieservice.service.impl;
 import com.radouaneoubakhane.movieservice.dto.director.DirectorRequest;
 import com.radouaneoubakhane.movieservice.dto.director.DirectorResponse;
 import com.radouaneoubakhane.movieservice.dto.director.MovieResponse;
+import com.radouaneoubakhane.movieservice.mapper.director.DirectorMovieResponseMapper;
 import com.radouaneoubakhane.movieservice.model.Director;
 import com.radouaneoubakhane.movieservice.model.Movie;
 import com.radouaneoubakhane.movieservice.exception.Director.DirectorNotFoundException;
 import com.radouaneoubakhane.movieservice.exception.Movie.MovieNotFoundException;
-import com.radouaneoubakhane.movieservice.mapper.DirectorMapper;
 import com.radouaneoubakhane.movieservice.repository.DirectorRepository;
 import com.radouaneoubakhane.movieservice.service.DirectorService;
 import com.radouaneoubakhane.movieservice.service.MovieService;
@@ -29,6 +29,8 @@ public class DirectorServiceImpl implements DirectorService {
 
     private final DirectorRepository directorRepository;
     private final MovieService movieService;
+    private final DirectorMovieResponseMapper movieResponseMapper;
+
 
 
 
@@ -154,7 +156,7 @@ public class DirectorServiceImpl implements DirectorService {
                 () -> new DirectorNotFoundException("Director not found")
         );
 
-        MovieResponse movieResponse = DirectorMapper.map(
+        MovieResponse movieResponse = movieResponseMapper.apply(
                 movieService.getMovie(movieId)
         );
 
@@ -185,7 +187,7 @@ public class DirectorServiceImpl implements DirectorService {
                 () -> new DirectorNotFoundException("Director not found")
         );
 
-        MovieResponse movieResponse = DirectorMapper.map(
+        MovieResponse movieResponse = movieResponseMapper.apply(
                 movieService.getMovie(movieId)
         );
 

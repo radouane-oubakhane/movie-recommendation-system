@@ -10,7 +10,7 @@ import com.radouaneoubakhane.movieservice.enums.Genre;
 import com.radouaneoubakhane.movieservice.event.NewMovieAddedEvent;
 import com.radouaneoubakhane.movieservice.exception.Actor.ActorNotFoundException;
 import com.radouaneoubakhane.movieservice.exception.Movie.MovieNotFoundException;
-import com.radouaneoubakhane.movieservice.mapper.MovieMapper;
+import com.radouaneoubakhane.movieservice.mapper.movie.ActorResponseMapper;
 import com.radouaneoubakhane.movieservice.repository.MovieRepository;
 import com.radouaneoubakhane.movieservice.service.ActorService;
 import com.radouaneoubakhane.movieservice.service.MovieService;
@@ -33,6 +33,7 @@ public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
     private final ActorService actorService;
+    private final ActorResponseMapper actorResponseMapper;
     private final KafkaTemplate<String, NewMovieAddedEvent> kafkaTemplate;
 
 
@@ -213,7 +214,7 @@ public class MovieServiceImpl implements MovieService {
                 () -> new MovieNotFoundException("Movie not found")
         );
 
-        ActorResponse actorResponse = MovieMapper.map(
+        ActorResponse actorResponse = actorResponseMapper.apply(
                 actorService.getActor(actorId)
         );
 
@@ -242,7 +243,7 @@ public class MovieServiceImpl implements MovieService {
                 () -> new MovieNotFoundException("Movie not found")
         );
 
-        ActorResponse actorResponse = MovieMapper.map(
+        ActorResponse actorResponse = actorResponseMapper.apply(
                 actorService.getActor(actorId)
         );
 

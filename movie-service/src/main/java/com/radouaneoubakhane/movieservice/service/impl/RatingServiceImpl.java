@@ -8,7 +8,7 @@ import com.radouaneoubakhane.movieservice.model.Movie;
 import com.radouaneoubakhane.movieservice.model.Rating;
 import com.radouaneoubakhane.movieservice.exception.Movie.MovieNotFoundException;
 import com.radouaneoubakhane.movieservice.exception.Rating.RatingNotFoundException;
-import com.radouaneoubakhane.movieservice.mapper.RatingMapper;
+import com.radouaneoubakhane.movieservice.mapper.rating.RatingMovieResponseMapper;
 import com.radouaneoubakhane.movieservice.repository.RatingRepository;
 import com.radouaneoubakhane.movieservice.service.MovieService;
 import com.radouaneoubakhane.movieservice.service.RatingService;
@@ -29,6 +29,7 @@ public class RatingServiceImpl implements RatingService {
 
     private final RatingRepository ratingRepository;
     private final MovieService movieService;
+    private final RatingMovieResponseMapper movieResponseMapper;
 
 
 
@@ -83,7 +84,7 @@ public class RatingServiceImpl implements RatingService {
     public RatingResponse createRating(RatingRequest ratingRequest) {
         log.info("Creating rating");
 
-        MovieResponse movieResponse = RatingMapper.map(
+        MovieResponse movieResponse = movieResponseMapper.apply(
                 movieService.getMovie(ratingRequest.getMovieId())
         );
 

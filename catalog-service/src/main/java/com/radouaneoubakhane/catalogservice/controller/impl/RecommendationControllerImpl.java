@@ -1,7 +1,7 @@
 package com.radouaneoubakhane.catalogservice.controller.impl;
 
 import com.radouaneoubakhane.catalogservice.controller.RecommendationController;
-import com.radouaneoubakhane.catalogservice.dto.movie.MovieRecommendationResponse;
+import com.radouaneoubakhane.catalogservice.dto.MovieRecommendationResponse;
 import com.radouaneoubakhane.catalogservice.service.RecommendationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

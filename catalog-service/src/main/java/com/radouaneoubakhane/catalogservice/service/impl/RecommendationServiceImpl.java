@@ -1,7 +1,7 @@
 package com.radouaneoubakhane.catalogservice.service.impl;
 
-import com.radouaneoubakhane.catalogservice.dto.movie.MovieResponse;
-import com.radouaneoubakhane.catalogservice.dto.movie.MovieRecommendationResponse;
+import com.radouaneoubakhane.catalogservice.dto.MovieResponse;
+import com.radouaneoubakhane.catalogservice.dto.MovieRecommendationResponse;
 import com.radouaneoubakhane.catalogservice.model.Recommendation;
 import com.radouaneoubakhane.catalogservice.repository.RecommendationRepository;
 import com.radouaneoubakhane.catalogservice.service.RecommendationService;

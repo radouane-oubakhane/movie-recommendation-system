@@ -1,4 +1,4 @@
-package com.radouaneoubakhane.catalogservice.dto.movie;
+package com.radouaneoubakhane.catalogservice.dto;
 
 
 import lombok.AllArgsConstructor;
